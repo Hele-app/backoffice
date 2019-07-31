@@ -23,6 +23,7 @@ import Icons from "views/Icons.jsx";
 import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
+import POI from "views/POI.jsx";
 
 const dashboardRoutes = [
   {
@@ -58,6 +59,13 @@ const dashboardRoutes = [
     name: "Icons",
     icon: "pe-7s-science",
     component: Icons,
+    layout: "/admin"
+  },
+  {
+    path: "/poi",
+    name: "POI",
+    icon: "pe-7s-global",
+    component: POI,
     layout: "/admin"
   },
   {
