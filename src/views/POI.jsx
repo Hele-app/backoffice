@@ -28,6 +28,7 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
 
 import avatar from "assets/img/faces/face-3.jpg";
 
@@ -35,6 +36,15 @@ class POI extends Component {
   render() {
     return (
       <div className="content">
+       <Nav>
+          <NavDropdown
+            title= "Menu" id="basic-nav-dropdown"
+          >
+            <MenuItem >Create</MenuItem>
+            <MenuItem >Update</MenuItem>
+            <MenuItem >Delete</MenuItem>
+          </NavDropdown>
+        </Nav>
         <Grid fluid>
           <Row>
             <Col md={8}>

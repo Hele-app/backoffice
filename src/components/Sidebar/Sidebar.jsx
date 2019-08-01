@@ -18,6 +18,8 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
+import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
+
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
 
 import logo from "assets/img/reactlogo.png";
@@ -93,6 +95,7 @@ class Sidebar extends Component {
                       <i className={prop.icon} />
                       <p>{prop.name}</p>
                     </NavLink>
+                    
                   </li>
                 );
               return null;

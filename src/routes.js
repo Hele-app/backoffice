@@ -24,6 +24,8 @@ import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
 import POI from "views/POI.jsx";
+import MetisMenu from 'react-metismenu';
+
 
 const dashboardRoutes = [
   {

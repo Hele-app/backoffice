@@ -73,6 +73,7 @@ class AdminNavbarLinks extends Component {
             Log out
           </NavItem>
         </Nav>
+        
       </div>
     );
   }
