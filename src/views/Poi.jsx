@@ -76,14 +76,17 @@ handleSubmit = event => {
         code_postal: this.state.code_postal,
         phone: this.state.phone,
         latitude: this.state.latitude,
-        longitude: this.state.longitude
+        longitude: this.state.longitude,
+        description: this.state.description,
+        site : this.state.site,
+        horaire : this.state.horaire,
     };
+    console.log(poi);
 
     axios.post(`http://127.0.0.1:3333/poi/create`, poi)
         .then(res => {
             console.log(res.data);
-            // alert(res.data.success);               
-            // console.log(res.data.success);
+            alert("create with succes !");               
         })
         .catch(error => {
             console.log(error)
@@ -101,107 +104,120 @@ handleSubmit = event => {
                 content={
                   <form onSubmit={this.handleSubmit}>
                       <FormInputs
-                        controlId="name" 
-                        value={this.state.name}
-                        onChange={this.handleChange}
                       ncols={["col-md-12"]}
                       properties={[
                         {  
                           label: "Name",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Name"
+                          placeholder: "Name",
+                          onChange:this.handleChange,
+                          id:"name"
                         }
                       ]}
                     />
                     <FormInputs
-                        value="{this.state.phone}"
-                        onChange="{this.handleChange}"
-                      ncols={["col-md-6"]}
+                      ncols={["col-md-12"]}
                       properties={[
                         {
                           label: "Phone",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Phone"
+                          placeholder: "Phone",
+                          onChange:this.handleChange,
+                          id:"phone"
                         },
                       ]}
                       />
                       <FormInputs
-                      value="{this.state.site}"
-                      onChange="{this.handleChange}"
-                    ncols={["col-md-6"]}
+                    ncols={["col-md-12"]}
                         properties={[
                         {
                             label: "Site",
                             type: "text",
                             bsClass: "form-control",
                             placeholder: "Site",
-                            controlId:"site"  
+                            controlId:"site",
+                            onChange:this.handleChange,
+                            id:"site"  
                           }
                         ]}
                     />
                     <FormInputs
-                      value="{this.state.adress}"
-                      onChange="{this.handleChange}"
-                      ncols={["col-md-6"]}
+                      ncols={["col-md-12"]}
+                      properties={[
+                        {  
+                          label: "Horaire",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Horaire",
+                          onChange:this.handleChange,
+                          id:"horaire"
+                        }
+                      ]}
+                    />
+                    <FormInputs
+                      ncols={["col-md-12"]}
                       properties={[
                         {
                           label: "Adress",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Adress",
+                          onChange:this.handleChange,
+                          id:"adress"  
                         }
                       ]}
                       />
                         <FormInputs
-                          value="{this.state.code_postal}"
-                          onChange="{this.handleChange}"
-                        ncols={["col-md-6"]}
+                        ncols={["col-md-12"]}
                         properties={[
                         {
                           label: "Postal Code",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "ZIP Code"
+                          placeholder: "ZIP Code",
+                          onChange:this.handleChange,
+                          id:"code_postal"  
                         }
                       ]}
                     />
                      <FormInputs
-                        value="{this.state.latitude}"
-                        onChange="{this.handleChange}"
-                      ncols={["col-md-6"]}
+                      ncols={["col-md-12"]}
                       properties={[
                         {
                           label: "Latitude",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Latitude"
+                          placeholder: "Latitude",
+                          onChange:this.handleChange,
+                          id:"latitude"  
                         }
                       ]}
                       />
                         <FormInputs
-                          value="{this.state.longitude}"
-                          onChange="{this.handleChange}"
-                        ncols={["col-md-6"]}
+                        ncols={["col-md-12"]}
                         properties={[
                         {
                           label: "Longitude",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Longitude"
+                          placeholder: "Longitude",
+                          onChange:this.handleChange,
+                          id:"longitude" 
                         }
                       ]}
                     />
                     <Row>
                       <Col md={12}>
-                        <FormGroup controlId="formControlsTextarea">
+                        <FormGroup controlId="description">
                           <ControlLabel>Description</ControlLabel>
                           <FormControl
                             rows="5"
                             componentClass="textarea"
                             bsClass="form-control"
                             placeholder="Here can be your description"
+                            onChange={this.handleChange}
                           />
                         </FormGroup>
                       </Col>
