@@ -28,34 +28,85 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import axios from 'axios';
 
-import avatar from "assets/img/faces/face-3.jpg";
 
-class POI extends Component {
+
+class Poi extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        name: "",
+        description: "", 
+        adress:"",
+        code_postal:"",
+        horaire:"",
+        phone:"",
+        site:"",
+        latitude:"",
+        longitude:""
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+}
+
+// validateForm() {
+//     return (this.state.name.length > 0 && this.state.adress.length > 0 
+//       && this.state.code_postal.length > 0 && this.state.phone.length > 0 
+//       && this.state.latitude.length > 0 && this.state.longitude.length > 0);
+// }
+
+handleChange = event => {
+    this.setState({
+        [event.target.id]: event.target.value
+    });
+}
+
+
+handleSubmit = event => {
+    event.preventDefault();
+
+    const poi = {
+        name: this.state.name,
+        adress: this.state.adress,
+        code_postal: this.state.code_postal,
+        phone: this.state.phone,
+        latitude: this.state.latitude,
+        longitude: this.state.longitude
+    };
+
+    axios.post(`http://127.0.0.1:3333/poi/create`, poi)
+        .then(res => {
+            console.log(res.data);
+            // alert(res.data.success);               
+            // console.log(res.data.success);
+        })
+        .catch(error => {
+            console.log(error)
+        });
+}
+
   render() {
     return (
       <div className="content">
-       <Nav>
-          <NavDropdown
-            title= "Menu" id="basic-nav-dropdown"
-          >
-            <MenuItem >Create</MenuItem>
-            <MenuItem >Update</MenuItem>
-            <MenuItem >Delete</MenuItem>
-          </NavDropdown>
-        </Nav>
         <Grid fluid>
-          <Row>
+        <Row>
             <Col md={8}>
               <Card
                 title="Create POI"
                 content={
-                  <form>
+                  <form onSubmit={this.handleSubmit}>
                       <FormInputs
+                        controlId="name" 
+                        value={this.state.name}
+                        onChange={this.handleChange}
                       ncols={["col-md-12"]}
                       properties={[
-                        {
+                        {  
                           label: "Name",
                           type: "text",
                           bsClass: "form-control",
@@ -64,31 +115,50 @@ class POI extends Component {
                       ]}
                     />
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                        value="{this.state.phone}"
+                        onChange="{this.handleChange}"
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Phone",
-                          type: "number",
+                          type: "text",
                           bsClass: "form-control",
                           placeholder: "Phone"
                         },
+                      ]}
+                      />
+                      <FormInputs
+                      value="{this.state.site}"
+                      onChange="{this.handleChange}"
+                    ncols={["col-md-6"]}
+                        properties={[
                         {
                             label: "Site",
                             type: "text",
                             bsClass: "form-control",
-                            placeholder: "Site"
+                            placeholder: "Site",
+                            controlId:"site"  
                           }
-                      ]}
+                        ]}
                     />
                     <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                      value="{this.state.adress}"
+                      onChange="{this.handleChange}"
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Adress",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Adress"
-                        },
+                          placeholder: "Adress",
+                        }
+                      ]}
+                      />
+                        <FormInputs
+                          value="{this.state.code_postal}"
+                          onChange="{this.handleChange}"
+                        ncols={["col-md-6"]}
+                        properties={[
                         {
                           label: "Postal Code",
                           type: "text",
@@ -98,19 +168,28 @@ class POI extends Component {
                       ]}
                     />
                      <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
+                        value="{this.state.latitude}"
+                        onChange="{this.handleChange}"
+                      ncols={["col-md-6"]}
                       properties={[
                         {
                           label: "Latitude",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "latitude"
-                        },
+                          placeholder: "Latitude"
+                        }
+                      ]}
+                      />
+                        <FormInputs
+                          value="{this.state.longitude}"
+                          onChange="{this.handleChange}"
+                        ncols={["col-md-6"]}
+                        properties={[
                         {
                           label: "Longitude",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "longitude"
+                          placeholder: "Longitude"
                         }
                       ]}
                     />
@@ -127,7 +206,7 @@ class POI extends Component {
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Button bsStyle="info" pullRight fill type="submit">
+                    <Button bsStyle="info"  pullRight fill type="submit">
                         Create POI
                     </Button>
                     <div className="clearfix" />
@@ -136,10 +215,12 @@ class POI extends Component {
               />
             </Col>
           </Row>
+          
         </Grid>
+   
       </div>
     );
   }
 }
 
-export default POI;
+export default Poi;

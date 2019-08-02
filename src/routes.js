@@ -23,9 +23,7 @@ import Icons from "views/Icons.jsx";
 import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
-import POI from "views/POI.jsx";
-import MetisMenu from 'react-metismenu';
-
+import Poi from "views/Poi.jsx";
 
 const dashboardRoutes = [
   {
@@ -67,7 +65,7 @@ const dashboardRoutes = [
     path: "/poi",
     name: "POI",
     icon: "pe-7s-global",
-    component: POI,
+    component: Poi,
     layout: "/admin"
   },
   {
