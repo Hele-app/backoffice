@@ -38,7 +38,8 @@ class EditPoi extends Component {
     super(props);
 
     this.state = {
-      id: this.props.match.params.id
+      id: this.props.match.params.id,
+      POIS:[]
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -80,9 +81,11 @@ handleSubmit = event => {
 
 componentDidMount(){
   // console.log("here", this.state.id);
-  // console.log( "toto", this.props.match.params.id);
   axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`)
   .then(response => {
+    this.setState({ 
+      POIS: response.data 
+  });
     console.log("data", response.data);
     console.log("name", response.data.name);
     })
@@ -109,8 +112,8 @@ componentDidMount(){
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Name",
-                          // value:this.state.name,
-                          value:this.state.name,
+                          value:this.state.POIS.name,
+                          // value:"{response.data.name}",
                           onChange:this.handleChange,
                           id:"name"
                         }
@@ -125,7 +128,8 @@ componentDidMount(){
                           bsClass: "form-control",
                           placeholder: "Phone",
                           onChange:this.handleChange,
-                          id:"phone"
+                          id:"phone",
+                          value:this.state.POIS.phone,
                         },
                       ]}
                       />
@@ -139,7 +143,8 @@ componentDidMount(){
                             placeholder: "Site",
                             controlId:"site",
                             onChange:this.handleChange,
-                            id:"site"  
+                            id:"site",
+                            value:this.state.POIS.site,  
                           }
                         ]}
                     />
@@ -152,7 +157,8 @@ componentDidMount(){
                           bsClass: "form-control",
                           placeholder: "Horaire",
                           onChange:this.handleChange,
-                          id:"horaire"
+                          id:"horaire",
+                          value:this.state.POIS.horaire,  
                         }
                       ]}
                     />
@@ -165,7 +171,8 @@ componentDidMount(){
                           bsClass: "form-control",
                           placeholder: "Adress",
                           onChange:this.handleChange,
-                          id:"adress"  
+                          id:"adress",
+                          value:this.state.POIS.adress,    
                         }
                       ]}
                       />
@@ -178,7 +185,8 @@ componentDidMount(){
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
                           onChange:this.handleChange,
-                          id:"code_postal"  
+                          id:"code_postal",
+                          value:this.state.POIS.code_postal,     
                         }
                       ]}
                     />
@@ -191,7 +199,8 @@ componentDidMount(){
                           bsClass: "form-control",
                           placeholder: "Latitude",
                           onChange:this.handleChange,
-                          id:"latitude"  
+                          id:"latitude",
+                          value:this.state.POIS.latitude,  
                         }
                       ]}
                       />
@@ -204,7 +213,8 @@ componentDidMount(){
                           bsClass: "form-control",
                           placeholder: "Longitude",
                           onChange:this.handleChange,
-                          id:"longitude" 
+                          id:"longitude",
+                          value:this.state.POIS.longitude,  
                         }
                       ]}
                     />
@@ -218,6 +228,7 @@ componentDidMount(){
                             bsClass="form-control"
                             placeholder="Here can be your description"
                             onChange={this.handleChange}
+                            value={this.state.POIS.description}
                           />
                         </FormGroup>
                       </Col>
