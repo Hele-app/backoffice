@@ -28,37 +28,22 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
 
-
-class Poi extends Component {
+class EditPoi extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-        name: "",
-        description: "", 
-        adress:"",
-        code_postal:"",
-        horaire:"",
-        phone:"",
-        site:"",
-        latitude:"",
-        longitude:""
+      id: this.props.match.params.id
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 }
-
-// validateForm() {
-//     return (this.state.name.length > 0 && this.state.adress.length > 0 
-//       && this.state.code_postal.length > 0 && this.state.phone.length > 0 
-//       && this.state.latitude.length > 0 && this.state.longitude.length > 0);
-// }
 
 handleChange = event => {
     this.setState({
@@ -70,28 +55,41 @@ handleChange = event => {
 handleSubmit = event => {
     event.preventDefault();
 
-    const poi = {
-        name: this.state.name,
-        adress: this.state.adress,
-        code_postal: this.state.code_postal,
-        phone: this.state.phone,
-        latitude: this.state.latitude,
-        longitude: this.state.longitude,
-        description: this.state.description,
-        site : this.state.site,
-        horaire : this.state.horaire,
-    };
-    console.log(poi);
+    // const poi = {
+    //     name: this.state.name,
+    //     adress: this.state.adress,
+    //     code_postal: this.state.code_postal,
+    //     phone: this.state.phone,
+    //     latitude: this.state.latitude,
+    //     longitude: this.state.longitude,
+    //     description: this.state.description,
+    //     site : this.state.site,
+    //     horaire : this.state.horaire,
+    // };
+    // console.log(poi);
 
-    axios.post(`http://127.0.0.1:3333/poi/create`, poi)
-        .then(res => {
-            console.log(res.data);
-            alert("create with succes !");               
-        })
-        .catch(error => {
-            console.log(error)
-        });
+    // axios.get(`http://127.0.0.1:3333/poi/edit/:id`, poi)
+    //     .then(res => {
+    //         console.log(res.data);
+    //         alert("create with succes !");               
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //     });
 }
+
+componentDidMount(){
+  // console.log("here", this.state.id);
+  // console.log( "toto", this.props.match.params.id);
+  axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`)
+  .then(response => {
+    console.log("data", response.data);
+    console.log("name", response.data.name);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }  
 
   render() {
     return (
@@ -100,7 +98,7 @@ handleSubmit = event => {
         <Row>
             <Col md={8}>
               <Card
-                title="Create POI"
+                title="Edit POI"
                 content={
                   <form onSubmit={this.handleSubmit}>
                       <FormInputs
@@ -111,6 +109,8 @@ handleSubmit = event => {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Name",
+                          // value:this.state.name,
+                          value:this.state.name,
                           onChange:this.handleChange,
                           id:"name"
                         }
@@ -223,7 +223,7 @@ handleSubmit = event => {
                       </Col>
                     </Row>
                     <Button bsStyle="info"  pullRight fill type="submit">
-                        Create POI
+                        Update POI
                     </Button>
                     <div className="clearfix" />
                   </form>
@@ -231,12 +231,10 @@ handleSubmit = event => {
               />
             </Col>
           </Row>
-          
-        </Grid>
-   
+        </Grid>   
       </div>
     );
   }
 }
 
-export default Poi;
+export default EditPoi;
