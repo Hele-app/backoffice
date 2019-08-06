@@ -1,68 +1,96 @@
-import React, { useState } from "react";
-import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
-import { Redirect } from 'react-router-dom';
-import axios from 'axios';
+import React, {
+  Component
+} from 'react';
+import Button from 'components/CustomButton/CustomButton';
+import FormInputs from 'components/FormInputs/FormInputs';
+import {
+  Row,
+  Col
+} from "react-bootstrap";
+import { withRouter } from 'react-router'
 
-export default function Login () {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [redirect, setRedirect] = useState(false);
+class Login extends Component {
 
-    const HandleSubmit = (e) => {
-	e.preventDefault();
-	axios.post('http://localhost:3333/v1/auth/login', {
-	    email: email,
-	    password: password
-	}).then(response => {
-	    if (response.data.user.roles === "ADMIN") {
-	    	localStorage.setItem('token', JSON.stringify(response.data.access_token));
-	    	localStorage.setItem('user', JSON.stringify(response.data.user));
-	    	setRedirect(!redirect);
-	    }
-	    else {
-	    	alert("You are not an administrator, you can not logged in");
-	    }
-	}).catch(error => {
-	    alert("Invalid credentials");
-	});
-    };
-
-    if (localStorage.getItem("token")) {
-        return(<Redirect to='/' />);
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      error: ''
     }
-    return (
-        <form onSubmit={HandleSubmit}>
-          <FormInputs
-            ncols={["col-md-6"]}
-            properties={[
-                {
-                    label: "Email",
-                    type: "email",
-                    bsClass: "form-control",
-                    placeholder: "email",
-		    onChange: e => setEmail(e.target.value)
-                }
-            ]}
-            />
+  }
 
-            <FormInputs
-              ncols={["col-md-6"]}
-              properties={[
-                  {
-                      label: "Password",
-                      type: "password",
-                      bsClass: "form-control",
-                      placeholder: "password",
-		      onChange: e => setPassword(e.target.value)
+  handleSubmit = (event) => {
+    event.preventDefault();
+    fetch("http://localhost:3333/v1/auth/login", {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password
+        }),
+      }).then(response => response.json())
+      .then(
+        response => {
+          if(response.status){
+            console.log(response)
+            this.setState({"error": "Veuillez entrer un e-mail ou mot de passe valide."})
+          } 
+          if(response.user.roles !== "ADMIN") {
+            this.setState({"error": "Vous n'êtes pas admin"})
+          }
+          else {
+            localStorage.setItem("user", JSON.stringify(response))
+            this.props.history.push("/admin");
+          }
+        })
+  }
 
-                  }
-              ]}
-              />
-              <Button bsStyle="info" pullRight fill type="submit">
-		Login
-              </Button>
-              <div className="clearfix" />
-        </form>
-    );
+  handleChange = (event) => {
+    this.setState({
+      [event.target.id]: event.target.value
+    })
+  }
+
+  render() {
+    return ( 
+    <div>
+      <h1>Hello</h1> 
+        <Row>
+            <Col md = {6} >
+                <form onSubmit = {this.handleSubmit} >
+                <span><small style={{ color : "red" }}>{this.state.error}</small></span>
+                    <FormInputs ncols = {["col-md-6", "col-md-5", ]}
+                                properties = {[
+                                    {
+                                        label: "Email address",
+                                        type: "email",
+                                        bsClass: "form-control",
+                                        placeholder: "Email",
+                                        id: "email",
+                                        onChange: this.handleChange
+                                    },
+                                    {
+                                        label: "Password",
+                                        type: "password",
+                                        bsClass: "form-control",
+                                        placeholder: "Password",
+                                        id: "password",
+                                        onChange: this.handleChange
+                                    }
+                                ]}
+
+                                /> 
+                    <Button type = "submit" bsStyle = "success"> Submit </Button>         
+                </form> 
+            </Col> 
+        </Row> 
+    </div>
+    )
+  }
 }
+
+export default withRouter(Login)
