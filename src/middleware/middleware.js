@@ -1,17 +1,15 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { log } from 'util';
 
 const AdminRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => {
-        response = localStorage.getItem("response")
-        if(!response || typeof response != "object"){
+       var response = localStorage.getItem("user")
+        if(!response){
             return(<Redirect to='/login' />)
         }
         var response = JSON.parse(response)
         if( response.user.roles === 'ADMIN'){
-            return(<Redirect to='/admin' />)
-        }
-        else{
             return( <Component {...props} /> )
         }
     }} />

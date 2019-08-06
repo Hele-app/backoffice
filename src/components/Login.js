@@ -7,14 +7,16 @@ import {
   Row,
   Col
 } from "react-bootstrap";
+import { withRouter } from 'react-router'
 
-export default class Login extends Component {
+class Login extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     }
   }
 
@@ -33,17 +35,13 @@ export default class Login extends Component {
       }).then(response => response.json())
       .then(
         response => {
-          console.log(response)
-          localStorage.setItem('response', JSON.stringify(response));
-          console.log(localStorage.getItem('response'))
-          // <Redirect to="/admin/dashboard" />
-          // redirection  a faire
-          // if(response.user.roles === 'ADMIN') {
-          //   console.log('admin')
-          // }
-          // else {
-          //   console.log('not admin')
-          // }
+          if(response.status){
+            console.log(response)
+            this.setState({"error": "Veuillez entrer un e-mail ou mot de passe valide."})
+          } else {
+            localStorage.setItem("user", JSON.stringify(response))
+            this.props.history.push("/admin");
+          }
         })
   }
 
@@ -53,53 +51,42 @@ export default class Login extends Component {
     })
   }
 
-
-
   render() {
-    return ( <
-      div >
-      <
-      h1 > Hello < /h1> <
-      Row >
-      <
-      Col md = {
-        6
-      } >
-      <
-      form onSubmit = {
-        this.handleSubmit
-      } >
-      <
-      FormInputs ncols = {
-        ["col-md-6", "col-md-5", ]
-      }
-      properties = {
-        [{
-            label: "Email address",
-            type: "email",
-            bsClass: "form-control",
-            placeholder: "Email",
-            id: "email",
-            onChange: this.handleChange
-          },
-          {
-            label: "Password",
-            type: "password",
-            bsClass: "form-control",
-            placeholder: "Password",
-            id: "password",
-            onChange: this.handleChange
-          }
-        ]
-      }
+    return ( 
+    <div>
+      <h1> Hello </h1> 
+        <Row>
+            <Col md = {6} >
+                <form onSubmit = {this.handleSubmit} >
+                <span><small style={{ color : "red" }}>{this.state.error}</small></span>
+                    <FormInputs ncols = {["col-md-6", "col-md-5", ]}
+                                properties = {[
+                                    {
+                                        label: "Email address",
+                                        type: "email",
+                                        bsClass: "form-control",
+                                        placeholder: "Email",
+                                        id: "email",
+                                        onChange: this.handleChange
+                                    },
+                                    {
+                                        label: "Password",
+                                        type: "password",
+                                        bsClass: "form-control",
+                                        placeholder: "Password",
+                                        id: "password",
+                                        onChange: this.handleChange
+                                    }
+                                ]}
 
-      /> <
-      Button type = "submit"
-      bsStyle = "success" > Submit < /Button>          <
-      /form> <
-      /Col> <
-      /Row> <
-      /div>
+                                /> 
+                    <Button type = "submit" bsStyle = "success"> Submit </Button>         
+                </form> 
+            </Col> 
+        </Row> 
+    </div>
     )
   }
 }
+
+export default withRouter(Login)
