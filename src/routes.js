@@ -23,7 +23,7 @@ import Icons from "views/Icons.jsx";
 import Maps from "views/Maps.jsx";
 import Notifications from "views/Notifications.jsx";
 import Upgrade from "views/Upgrade.jsx";
-import Login from "./components/Login";
+import Login from "./views/Login.jsx";
 
 const dashboardRoutes = [
   {

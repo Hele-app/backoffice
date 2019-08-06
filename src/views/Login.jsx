@@ -39,7 +39,7 @@ class Login extends Component {
             console.log(response)
             this.setState({"error": "Veuillez entrer un e-mail ou mot de passe valide."})
           } 
-          if(response.user.roles != "ADMIN") {
+          if(response.user.roles !== "ADMIN") {
             this.setState({"error": "Vous n'êtes pas admin"})
           }
           else {
@@ -58,7 +58,7 @@ class Login extends Component {
   render() {
     return ( 
     <div>
-      <h1> Hello </h1> 
+      <h1>Hello</h1> 
         <Row>
             <Col md = {6} >
                 <form onSubmit = {this.handleSubmit} >

@@ -19,7 +19,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import  Login  from "./components/Login";
+import  Login  from "./views/Login.jsx";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/css/animate.min.css";
