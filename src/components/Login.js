@@ -38,7 +38,11 @@ class Login extends Component {
           if(response.status){
             console.log(response)
             this.setState({"error": "Veuillez entrer un e-mail ou mot de passe valide."})
-          } else {
+          } 
+          if(response.user.roles != "ADMIN") {
+            this.setState({"error": "Vous n'êtes pas admin"})
+          }
+          else {
             localStorage.setItem("user", JSON.stringify(response))
             this.props.history.push("/admin");
           }

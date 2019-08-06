@@ -7,12 +7,10 @@ const AdminRoute = ({ component: Component, ...rest }) => (
        var response = localStorage.getItem("user")
         if(!response){
             return(<Redirect to='/login' />)
-        }
-        var response = JSON.parse(response)
-        if( response.user.roles === 'ADMIN'){
+        } 
             return( <Component {...props} /> )
         }
-    }} />
+    } />
 )
 
 
