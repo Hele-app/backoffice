@@ -24,6 +24,7 @@ import {
   ControlLabel,
   FormControl
 } from "react-bootstrap";
+import { Link} from "react-router-dom";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
@@ -96,6 +97,12 @@ handleSubmit = event => {
     return (
       <div className="content">
         <Grid fluid>
+        <Row>
+            <Col md={8}>
+            <Link to={"/Admin/Poi"} className="btn btn-primary">Back</Link>
+            <br />
+            </Col>
+        </Row>
         <Row>
             <Col md={8}>
               <Card

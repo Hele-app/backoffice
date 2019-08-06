@@ -16,9 +16,15 @@
 
 */
 import React, { Component } from "react";
+import {
+  Grid,
+  Row,
+  Col
+} from "react-bootstrap";
 
-import CreatePoi from "./CreatePoi.jsx";
+
 import ShowPoi from "./ShowPoi.jsx";
+import { Link} from "react-router-dom";
 
 
 class Poi extends Component {
@@ -27,9 +33,15 @@ class Poi extends Component {
   render() {
     return (
       <div className="content">
-        <CreatePoi /> 
-        <ShowPoi />  
-      
+        <Grid fluid>
+          <Row>
+            <Col md={12}>
+              <Link to={"/Admin/CreatePoi"} className="btn btn-primary">Create POI</Link>
+            </Col>
+          </Row>
+        </Grid>
+        <br />
+        <ShowPoi />
       </div>
     );
   }

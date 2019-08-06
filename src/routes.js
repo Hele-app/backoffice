@@ -62,7 +62,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/poi",
+    path: "/Poi",
     name: "CRUD Poi",
     icon: "pe-7s-global",
     component: Poi,

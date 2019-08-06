@@ -30,6 +30,7 @@ import routes from "routes.js";
 
 import image from "assets/img/sidebar-3.jpg";
 import EditPoi from "../views/Poi/EditPoi.jsx";
+import CreatePoi from "../views/Poi/CreatePoi.jsx";
 
 class Admin extends Component {
   constructor(props) {
@@ -184,6 +185,7 @@ class Admin extends Component {
           />
           <Switch>{this.getRoutes(routes)}</Switch>
           <Route exac path="/Admin/EditPoi/:id" component={EditPoi} />
+          <Route exac path="/Admin/CreatePoi" component={CreatePoi} />
           <Footer />
           <FixedPlugin
             handleImageClick={this.handleImageClick}

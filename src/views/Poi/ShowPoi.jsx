@@ -36,6 +36,9 @@ class ShowPoi extends Component {
     this.state = {
       poi: [],
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   
   componentDidMount(){
@@ -59,6 +62,26 @@ class ShowPoi extends Component {
   //   axios.delete('http:/poi/delete/{this.state.id}')
   //   .then(res => console.log(res.data));
   // }
+  handleChange = event => {
+  // console.log(event.target.id)
+    this.setState({
+        [event.target.id]: event.target.value
+    });
+}
+
+
+handleSubmit = event => {
+    event.preventDefault();
+
+    axios.get(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
+    .then(res => {
+      console.log(res.data);
+      // this.setState({deleteMsg: "User is successfully deleted from database"})
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
 
   render() {
     return (
@@ -104,10 +127,11 @@ class ShowPoi extends Component {
                                 <Link to={"/Admin/EditPoi/"+pois.id} className="btn btn-primary">Edit</Link>
                               </td>
                               <td>
-                                <form >
-                                  <button type="button" onClick={this.delete} className="btn btn-danger">Delete</button>
+                                <form onSubmit={this.handleSubmit}>
+                                  <button type="button" onClick={this.handleChange} className="btn btn-danger">Delete</button>
                                 </form>
                               </td>
+                              {/* <p style={{color: 'green'}}>{this.state.addMsg}</p> */}
                           </tr>
                         )
                       })}

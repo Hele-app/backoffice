@@ -28,7 +28,6 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 
 
@@ -39,7 +38,16 @@ class EditPoi extends Component {
 
     this.state = {
       id: this.props.match.params.id,
-      POIS:[]
+      POIS:[],
+      name: "",
+      adress: "",
+      code_postal: "",
+      phone: "",
+      latitude: "",
+      longitude: "",
+      description: "",
+      site : "",
+      horaire : ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -47,8 +55,10 @@ class EditPoi extends Component {
 }
 
 handleChange = event => {
+  // console.log(event.target.id)
     this.setState({
-        [event.target.id]: event.target.value
+        // [event.target.id]: event.target.value
+        POIS: event.target.value
     });
 }
 
@@ -56,27 +66,26 @@ handleChange = event => {
 handleSubmit = event => {
     event.preventDefault();
 
-    // const poi = {
-    //     name: this.state.name,
-    //     adress: this.state.adress,
-    //     code_postal: this.state.code_postal,
-    //     phone: this.state.phone,
-    //     latitude: this.state.latitude,
-    //     longitude: this.state.longitude,
-    //     description: this.state.description,
-    //     site : this.state.site,
-    //     horaire : this.state.horaire,
-    // };
-    // console.log(poi);
+    const poi = {
+        name: this.state.name,
+        adress: this.state.adress,
+        code_postal: this.state.code_postal,
+        phone: this.state.phone,
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+        description: this.state.description,
+        site : this.state.site,
+        horaire : this.state.horaire,
+    };
+    console.log(poi);
 
-    // axios.get(`http://127.0.0.1:3333/poi/edit/:id`, poi)
-    //     .then(res => {
-    //         console.log(res.data);
-    //         alert("create with succes !");               
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //     });
+    axios.post(`http://127.0.0.1:3333/poi/update/${this.state.id}`, poi)
+        .then(res => {
+            console.log(res.data);             
+        })
+        .catch(error => {
+            console.log(error)
+        });
 }
 
 componentDidMount(){
@@ -92,7 +101,22 @@ componentDidMount(){
     .catch(function (error) {
       console.log(error);
     })
-  }  
+}
+deleteUser(event) {
+  event.preventDefault();
+
+  axios.delete(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
+  .then(res => {
+    console.log(res.data);
+    this.setState({deleteMsg: "User is successfully deleted from database"})
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+}
+
+
+
 
   render() {
     return (
