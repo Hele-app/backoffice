@@ -31,6 +31,7 @@ import routes from "routes.js";
 import image from "assets/img/sidebar-3.jpg";
 import EditPoi from "../views/Poi/EditPoi.jsx";
 import CreatePoi from "../views/Poi/CreatePoi.jsx";
+import DeletePoi from "../views/Poi/DeletePoi.jsx";
 
 class Admin extends Component {
   constructor(props) {
@@ -186,6 +187,7 @@ class Admin extends Component {
           <Switch>{this.getRoutes(routes)}</Switch>
           <Route exac path="/Admin/EditPoi/:id" component={EditPoi} />
           <Route exac path="/Admin/CreatePoi" component={CreatePoi} />
+          <Route exac path="/Admin/DeletePoi/:id" component={DeletePoi} />
           <Footer />
           <FixedPlugin
             handleImageClick={this.handleImageClick}

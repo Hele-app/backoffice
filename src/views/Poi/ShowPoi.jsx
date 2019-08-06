@@ -102,8 +102,8 @@ handleSubmit = event => {
                         <td>Name</td>
                         <td>Phone</td>
                         <td>Site</td>
-                        <td>Horaire</td>
-                        <td>postal code</td>
+                        <td>Hour</td>
+                        <td>Postal code</td>
                         <td>Latitude</td>
                         <td>Longitude</td>
                         <td>Description</td>
@@ -118,8 +118,8 @@ handleSubmit = event => {
                               <td>{pois.name}</td>
                               <td>{pois.phone}</td>
                               <td>{pois.site}</td>
-                              <td>{pois.horaire}</td>
-                              <td>{pois.code_postal}</td>
+                              <td>{pois.hour}</td>
+                              <td>{pois.postal}</td>
                               <td>{pois.latitude}</td>
                               <td>{pois.longitude}</td>
                               <td>{pois.description}</td>
@@ -127,9 +127,10 @@ handleSubmit = event => {
                                 <Link to={"/Admin/EditPoi/"+pois.id} className="btn btn-primary">Edit</Link>
                               </td>
                               <td>
-                                <form onSubmit={this.handleSubmit}>
-                                  <button type="button" onClick={this.handleChange} className="btn btn-danger">Delete</button>
-                                </form>
+                                {/* <form onSubmit={this.handleSubmit}>
+                                  <button type="submit" onClick={this.handleChange} className="btn btn-danger">Delete</button>
+                                </form> */}
+                                <td><Link className="butn_danger" to={"/Admin/DeletePoi/"+pois.id}>Delete</Link></td>
                               </td>
                               {/* <p style={{color: 'green'}}>{this.state.addMsg}</p> */}
                           </tr>

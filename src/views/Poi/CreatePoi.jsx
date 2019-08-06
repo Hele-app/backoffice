@@ -42,12 +42,13 @@ class CreatePoi extends Component {
         name: "",
         description: "", 
         adress:"",
-        code_postal:"",
-        horaire:"",
+        postal:"",
+        hour:"",
         phone:"",
         site:"",
         latitude:"",
-        longitude:""
+        longitude:"",
+        region_id:""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -73,20 +74,20 @@ handleSubmit = event => {
     const poi = {
         name: this.state.name,
         adress: this.state.adress,
-        code_postal: this.state.code_postal,
+        postal: this.state.postal,
         phone: this.state.phone,
         latitude: this.state.latitude,
         longitude: this.state.longitude,
         description: this.state.description,
-        site : this.state.site,
-        horaire : this.state.horaire,
+        site: this.state.site,
+        hour: this.state.hour,
+        region_id: this.state.region_id
     };
     console.log(poi);
 
     axios.post(`http://127.0.0.1:3333/poi/create`, poi)
         .then(res => {
-            console.log(res.data);
-            // alert("create with succes !");               
+            console.log(res.data);              
         })
         .catch(error => {
             console.log(error)
@@ -104,11 +105,33 @@ handleSubmit = event => {
             </Col>
         </Row>
         <Row>
+          <Col md={8}>
+            <select class="selectpicker " data-style="select-with-transition" title="Single Select">
+              <option disabled>Choose city</option>
+              <option value="2">Foobar</option>
+              <option value="3">Is great</option>
+            </select>
+          </Col>
+        </Row>
+        <Row>
             <Col md={8}>
               <Card
                 title="Create POI"
                 content={
                   <form onSubmit={this.handleSubmit}>
+                    <FormInputs
+                      ncols={["col-md-12"]}
+                      properties={[
+                        {  
+                          label: "region_id",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "region_id",
+                          onChange:this.handleChange,
+                          id:"region_id"
+                        }
+                      ]}
+                    />
                       <FormInputs
                       ncols={["col-md-12"]}
                       properties={[
@@ -158,7 +181,7 @@ handleSubmit = event => {
                           bsClass: "form-control",
                           placeholder: "Horaire",
                           onChange:this.handleChange,
-                          id:"horaire"
+                          id:"hour"
                         }
                       ]}
                     />
@@ -184,7 +207,7 @@ handleSubmit = event => {
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
                           onChange:this.handleChange,
-                          id:"code_postal"  
+                          id:"postal"  
                         }
                       ]}
                     />
