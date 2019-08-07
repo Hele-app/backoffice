@@ -35,6 +35,15 @@ class ShowPoi extends Component {
     super(props);
     this.state = {
       poi: [],
+      name: "",
+      phone: "",
+      site: "",
+      hour: "",
+      postal: "",
+      latitude: "",
+      longitude: "",
+      description: "",
+      region_id: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -107,6 +116,7 @@ handleSubmit = event => {
                         <td>Latitude</td>
                         <td>Longitude</td>
                         <td>Description</td>
+                        <td>region_id</td>
                         <td colspan="3">Action poi</td>
                       </tr>
                     </thead>
@@ -123,6 +133,7 @@ handleSubmit = event => {
                               <td>{pois.latitude}</td>
                               <td>{pois.longitude}</td>
                               <td>{pois.description}</td>
+                              <td>{pois.region_id}</td>
                               <td>
                                 <Link to={"/Admin/EditPoi/"+pois.id} className="btn btn-primary">Edit</Link>
                               </td>
@@ -130,9 +141,9 @@ handleSubmit = event => {
                                 {/* <form onSubmit={this.handleSubmit}>
                                   <button type="submit" onClick={this.handleChange} className="btn btn-danger">Delete</button>
                                 </form> */}
-                                <td><Link className="butn_danger" to={"/Admin/DeletePoi/"+pois.id}>Delete</Link></td>
+                                <td><Link className="btn btn-danger" to={"/Admin/DeletePoi/"+pois.id}>Delete</Link></td>
                               </td>
-                              {/* <p style={{color: 'green'}}>{this.state.addMsg}</p> */}
+                              <p style={{color: 'green'}}>{this.state.addMsg}</p>
                           </tr>
                         )
                       })}

@@ -18,119 +18,50 @@
 import React, { Component } from "react";
 
 
-
-import ShowPoi from "./ShowPoi.jsx";
-import { Link, Redirect} from 'react-router-dom';
+import { Redirect} from 'react-router-dom';
 import axios from 'axios';
 
 
 class DeletePoi extends Component {
 
   constructor(props){
-            super(props)
-            this.state = {
-                isDelete: false,
-                id: this.props.match.params.id
-            }
-            console.log(this.props.match.params.id);
-        }
-    
-        delete() {
-          axios.get(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
-            .then(res => {
-                this.setState({isDelete: true})
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        }
-    
-        render() {
-            if (this.state.isDelete) {
-                return <Redirect to={{ pathname: "/Admin/Poi" }} />;
-            } else {
-                return(
-                    <div>
-                        <h1>Supprimer la poi</h1>
-    
-                        <p>Voulez-vous supprimer cette poi? </p>
-    
-                        <div>
-                            <button onClick={this.delete()}>Oui</button>
-                            <button href="/Admin/Poi">Non</button>
-                        </div>
-    
-                    </div>
-                );
-            }
-        
-        }
-
-
-  // render() {
-  //   return (
-  //     <div className="content">
-  //       <Grid fluid>
-  //         <Row>
-  //           <Col md={12}>
-  //             <Link to={"/Admin/CreatePoi"} className="btn btn-primary">Create POI</Link>
-  //           </Col>
-  //         </Row>
-  //       </Grid>
-  //       <br />
-  //       <ShowPoi />
-  //     </div>
-  //   );
-  // }
+    super(props)
+    this.state = {
+      isDelete: false,
+      id: this.props.match.params.id
+    }
+    console.log(this.props.match.params.id);
+  }
+  
+  delete() {
+    axios.get(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
+    .then(res => {
+      this.setState({
+        isDelete: true,
+        deleteMsg: "User is successfully deleted from database"
+      })
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+  
+  render() {
+    if (this.state.isDelete) {
+      return <Redirect to={{ pathname: "/Admin/Poi" }} />;
+    } else {
+      return(
+        <div>
+          <h1>Supprimer la poi</h1>
+          <p>Voulez-vous supprimer cette poi? </p>
+          <div>
+            <button onClick={this.delete()}>Oui</button>
+            <button href="/Admin/Poi">Non</button>
+          </div>
+        </div>
+      );
+    }
+  }
 }
 
 export default DeletePoi;
-
-
-
-// import React from 'react';
-// import { Link, Redirect} from 'react-router-dom';
-// import axios from 'axios';
-
-// export default class Delete extends React.Component 
-// {
-//     constructor(props){
-//         super(props)
-//         this.state = {
-//             isDelete: false,
-//             id: this.props.match.params.id
-//         }
-//     }
-
-//     delete() {
-//         axios.delete(`http://localhost:8000/api/admin/category/${this.state.id}`)
-//         .then(res => {
-//             alert(res.data.success); 
-//             this.setState({isDelete: true})
-//         })
-//         .catch(error => {
-//             console.log(error);
-//         })
-//     }
-
-//     render() {
-//         if (this.state.isDelete) {
-//             return <Redirect to={{ pathname: "/admin/categories" }} />;
-//         } else {
-//             return(
-//                 <div>
-//                     <h1>Supprimer la categorie</h1>
-
-//                     <p>Voulez-vous supprimer cette categorie ? </p>
-
-//                     <div>
-//                         <button onClick={this.delete()}>Oui</button>
-//                         <button href="/admin/categories">Non</button>
-//                     </div>
-
-//                 </div>
-//             );
-//         }
-    
-//     }
-// }

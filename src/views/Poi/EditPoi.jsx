@@ -29,7 +29,7 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
 
 class EditPoi extends Component {
 
@@ -38,90 +38,63 @@ class EditPoi extends Component {
 
     this.state = {
       id: this.props.match.params.id,
-      POIS:[],
-      name: "",
-      adress: "",
-      code_postal: "",
-      phone: "",
-      latitude: "",
-      longitude: "",
-      description: "",
-      site : "",
-      horaire : ""
+      poiss: {}
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-}
+  }
 
-handleChange = event => {
-  // console.log(event.target.id)
+  handleChange = event => {
+    let poiss = this.state.poiss;
+    poiss[event.target.id] = event.target.value;
     this.setState({
-        // [event.target.id]: event.target.value
-        POIS: event.target.value
+      poiss: poiss
     });
-}
+  }
 
-
-handleSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
 
-    const poi = {
-        name: this.state.name,
-        adress: this.state.adress,
-        code_postal: this.state.code_postal,
-        phone: this.state.phone,
-        latitude: this.state.latitude,
-        longitude: this.state.longitude,
-        description: this.state.description,
-        site : this.state.site,
-        horaire : this.state.horaire,
-    };
-    console.log(poi);
-
-    axios.post(`http://127.0.0.1:3333/poi/update/${this.state.id}`, poi)
+    axios.post(`http://127.0.0.1:3333/poi/update/${this.state.id}`, this.state.poiss)
         .then(res => {
-            console.log(res.data);             
+            console.log(res.data);              
         })
         .catch(error => {
             console.log(error)
         });
 }
 
-componentDidMount(){
+
+  componentDidMount(){
   // console.log("here", this.state.id);
-  axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`)
-  .then(response => {
-    this.setState({ 
-      POIS: response.data 
-  });
-    console.log("data", response.data);
-    console.log("name", response.data.name);
+    axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`)
+    .then(response => {
+      console.log(response.data);
+      this.setState({ 
+        poiss: response.data
+    });
+    console.log(this.state.poiss)
+    // console.log("data", response.data);
+    // console.log("name", response.data.name);
     })
     .catch(function (error) {
       console.log(error);
     })
-}
-deleteUser(event) {
-  event.preventDefault();
-
-  axios.delete(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
-  .then(res => {
-    console.log(res.data);
-    this.setState({deleteMsg: "User is successfully deleted from database"})
-  })
-  .catch((err) => {
-    console.log(err);
-  })
-}
-
-
-
+  }
 
   render() {
+    console.log(this.state.poiss)
+    // const adress = this.state.adress !== null;
+    // const name = this.state.name !== null;
     return (
       <div className="content">
         <Grid fluid>
+        <Row>
+            <Col md={8}>
+            <Link to={"/Admin/Poi"} className="btn btn-primary">Back</Link>
+            <br />
+            </Col>
+        </Row>
         <Row>
             <Col md={8}>
               <Card
@@ -136,8 +109,7 @@ deleteUser(event) {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Name",
-                          value:this.state.POIS.name,
-                          // value:"{response.data.name}",
+                          value:this.state.poiss.name,
                           onChange:this.handleChange,
                           id:"name"
                         }
@@ -153,7 +125,7 @@ deleteUser(event) {
                           placeholder: "Phone",
                           onChange:this.handleChange,
                           id:"phone",
-                          value:this.state.POIS.phone,
+                          value:this.state.poiss.phone,
                         },
                       ]}
                       />
@@ -168,7 +140,7 @@ deleteUser(event) {
                             controlId:"site",
                             onChange:this.handleChange,
                             id:"site",
-                            value:this.state.POIS.site,  
+                            value:this.state.poiss.site,  
                           }
                         ]}
                     />
@@ -181,8 +153,8 @@ deleteUser(event) {
                           bsClass: "form-control",
                           placeholder: "Horaire",
                           onChange:this.handleChange,
-                          id:"horaire",
-                          value:this.state.POIS.horaire,  
+                          id:"hour",
+                          value:this.state.poiss.hour,  
                         }
                       ]}
                     />
@@ -196,7 +168,7 @@ deleteUser(event) {
                           placeholder: "Adress",
                           onChange:this.handleChange,
                           id:"adress",
-                          value:this.state.POIS.adress,    
+                          value:this.state.poiss.adress,    
                         }
                       ]}
                       />
@@ -209,8 +181,8 @@ deleteUser(event) {
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
                           onChange:this.handleChange,
-                          id:"code_postal",
-                          value:this.state.POIS.code_postal,     
+                          id:"postal",
+                          value:this.state.poiss.postal,     
                         }
                       ]}
                     />
@@ -224,7 +196,7 @@ deleteUser(event) {
                           placeholder: "Latitude",
                           onChange:this.handleChange,
                           id:"latitude",
-                          value:this.state.POIS.latitude,  
+                          value:this.state.poiss.latitude,  
                         }
                       ]}
                       />
@@ -238,7 +210,7 @@ deleteUser(event) {
                           placeholder: "Longitude",
                           onChange:this.handleChange,
                           id:"longitude",
-                          value:this.state.POIS.longitude,  
+                          value:this.state.poiss.longitude,  
                         }
                       ]}
                     />
@@ -252,7 +224,7 @@ deleteUser(event) {
                             bsClass="form-control"
                             placeholder="Here can be your description"
                             onChange={this.handleChange}
-                            value={this.state.POIS.description}
+                            value={this.state.poiss.description}
                           />
                         </FormGroup>
                       </Col>
