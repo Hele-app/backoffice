@@ -30,6 +30,7 @@ import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router'
 
 class EditPoi extends Component {
 
@@ -38,11 +39,13 @@ class EditPoi extends Component {
 
     this.state = {
       id: this.props.match.params.id,
-      poiss: {}
+      poiss: {},
+      isModify: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+  
 
   handleChange = event => {
     let poiss = this.state.poiss;
@@ -81,8 +84,12 @@ class EditPoi extends Component {
       console.log(error);
     })
   }
+  
 
   render() {
+    if (this.state.isModify) {
+      return <Redirect to={{ pathname: "/admin/Poi" }} />;
+  } else {
     console.log(this.state.poiss)
     // const adress = this.state.adress !== null;
     // const name = this.state.name !== null;
@@ -99,13 +106,14 @@ class EditPoi extends Component {
             <Col md={8}>
               <Card
                 title="Edit POI"
+                category="Please fill in the required fields *"
                 content={
                   <form onSubmit={this.handleSubmit}>
                       <FormInputs
                       ncols={["col-md-12"]}
                       properties={[
                         {  
-                          label: "Name",
+                          label: "Name *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Name",
@@ -119,7 +127,7 @@ class EditPoi extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Phone",
+                          label: "Phone *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Phone",
@@ -162,7 +170,7 @@ class EditPoi extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Adress",
+                          label: "Adress *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Adress",
@@ -176,7 +184,7 @@ class EditPoi extends Component {
                         ncols={["col-md-12"]}
                         properties={[
                         {
-                          label: "Postal Code",
+                          label: "Postal Code *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
@@ -190,7 +198,7 @@ class EditPoi extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Latitude",
+                          label: "Latitude *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Latitude",
@@ -204,7 +212,7 @@ class EditPoi extends Component {
                         ncols={["col-md-12"]}
                         properties={[
                         {
-                          label: "Longitude",
+                          label: "Longitude *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Longitude",
@@ -241,6 +249,7 @@ class EditPoi extends Component {
         </Grid>   
       </div>
     );
+              }
   }
 }
 

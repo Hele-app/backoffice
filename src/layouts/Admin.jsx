@@ -29,9 +29,9 @@ import { style } from "variables/Variables.jsx";
 import routes from "routes.js";
 
 import image from "assets/img/sidebar-3.jpg";
-import EditPoi from "../views/Poi/EditPoi.jsx";
-import CreatePoi from "../views/Poi/CreatePoi.jsx";
-import DeletePoi from "../views/Poi/DeletePoi.jsx";
+import EditPoi from "../views/poi/EditPoi.jsx";
+import CreatePoi from "../views/poi/CreatePoi.jsx";
+import DeletePoi from "../views/poi/DeletePoi.jsx";
 
 class Admin extends Component {
   constructor(props) {

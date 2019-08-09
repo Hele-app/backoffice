@@ -30,8 +30,7 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
-
-
+import { Redirect } from 'react-router'
 
 class CreatePoi extends Component {
 
@@ -55,11 +54,11 @@ class CreatePoi extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 }
 
-// validateForm() {
-//     return (this.state.name.length > 0 && this.state.adress.length > 0 
-//       && this.state.code_postal.length > 0 && this.state.phone.length > 0 
-//       && this.state.latitude.length > 0 && this.state.longitude.length > 0);
-// }
+validateForm() {
+    return (this.state.name.length > 0 && this.state.adress.length > 0 
+      && this.state.postal.length > 0 && this.state.phone.length > 0 
+      && this.state.latitude.length > 0 && this.state.longitude.length > 0);
+}
 
 handleChange = event => {
     this.setState({
@@ -81,7 +80,8 @@ handleSubmit = event => {
         description: this.state.description,
         site: this.state.site,
         hour: this.state.hour,
-        region_id: this.state.region_id
+        region_id: this.state.region_id,
+        isCreate: false
     };
     console.log(poi);
 
@@ -95,9 +95,19 @@ handleSubmit = event => {
 }
 
   render() {
+    if (this.state.isCreate) {
+      return <Redirect to={{ pathname: "/admin/Poi" }} />;
+  } else {
     return (
       <div className="content">
         <Grid fluid>
+          <Row>
+          <select class="selectpicker " data-style="select-with-transition" title="Single Select" data-size="7">
+    <option disabled>Choose city</option>
+    <option value="2">Foobar</option>
+    <option value="3">Is great</option>
+</select>
+          </Row>
         <Row>
             <Col md={8}>
             <Link to={"/Admin/Poi"} className="btn btn-primary">Back</Link>
@@ -117,13 +127,14 @@ handleSubmit = event => {
             <Col md={8}>
               <Card
                 title="Create POI"
+                category="Please fill in the required fields *"
                 content={
                   <form onSubmit={this.handleSubmit}>
                     <FormInputs
                       ncols={["col-md-12"]}
                       properties={[
                         {  
-                          label: "region_id",
+                          label: "region_id *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "region_id",
@@ -136,7 +147,7 @@ handleSubmit = event => {
                       ncols={["col-md-12"]}
                       properties={[
                         {  
-                          label: "Name",
+                          label: "Name *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Name",
@@ -149,7 +160,7 @@ handleSubmit = event => {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Phone",
+                          label: "Phone *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Phone",
@@ -189,7 +200,7 @@ handleSubmit = event => {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Adress",
+                          label: "Address *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Adress",
@@ -202,7 +213,7 @@ handleSubmit = event => {
                         ncols={["col-md-12"]}
                         properties={[
                         {
-                          label: "Postal Code",
+                          label: "Postal Code *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
@@ -215,7 +226,7 @@ handleSubmit = event => {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Latitude",
+                          label: "Latitude *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Latitude",
@@ -228,7 +239,7 @@ handleSubmit = event => {
                         ncols={["col-md-12"]}
                         properties={[
                         {
-                          label: "Longitude",
+                          label: "Longitude *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Longitude",
@@ -251,7 +262,7 @@ handleSubmit = event => {
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Button bsStyle="info"  pullRight fill type="submit">
+                    <Button bsStyle="info" disabled={!this.validateForm()} pullRight fill type="submit">
                         Create POI
                     </Button>
                     <div className="clearfix" />
@@ -263,6 +274,7 @@ handleSubmit = event => {
         </Grid>   
       </div>
     );
+              }
   }
 }
 

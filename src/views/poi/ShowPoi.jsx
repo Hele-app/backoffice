@@ -66,11 +66,6 @@ class ShowPoi extends Component {
     })
   }  
   
-  // delete(e) {
-  //   e.preventDefault();
-  //   axios.delete('http:/poi/delete/{this.state.id}')
-  //   .then(res => console.log(res.data));
-  // }
   handleChange = event => {
   // console.log(event.target.id)
     this.setState({
@@ -100,7 +95,6 @@ handleSubmit = event => {
           <Col md={12}>
               <Card
                 title="All poi"
-                category="Show, update and delete"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -112,6 +106,7 @@ handleSubmit = event => {
                         <td>Phone</td>
                         <td>Site</td>
                         <td>Hour</td>
+                        <td>Address</td>
                         <td>Postal code</td>
                         <td>Latitude</td>
                         <td>Longitude</td>
@@ -129,6 +124,7 @@ handleSubmit = event => {
                               <td>{pois.phone}</td>
                               <td>{pois.site}</td>
                               <td>{pois.hour}</td>
+                              <td>{pois.adress}</td>
                               <td>{pois.postal}</td>
                               <td>{pois.latitude}</td>
                               <td>{pois.longitude}</td>
@@ -138,9 +134,6 @@ handleSubmit = event => {
                                 <Link to={"/Admin/EditPoi/"+pois.id} className="btn btn-primary">Edit</Link>
                               </td>
                               <td>
-                                {/* <form onSubmit={this.handleSubmit}>
-                                  <button type="submit" onClick={this.handleChange} className="btn btn-danger">Delete</button>
-                                </form> */}
                                 <td><Link className="btn btn-danger" to={"/Admin/DeletePoi/"+pois.id}>Delete</Link></td>
                               </td>
                               <p style={{color: 'green'}}>{this.state.addMsg}</p>
