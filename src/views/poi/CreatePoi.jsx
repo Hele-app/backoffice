@@ -25,7 +25,6 @@ import {
   FormControl
 } from "react-bootstrap";
 import { Link} from "react-router-dom";
-
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
@@ -38,89 +37,80 @@ class CreatePoi extends Component {
     super(props);
 
     this.state = {
-        name: "",
-        description: "", 
-        adress:"",
-        postal:"",
-        hour:"",
-        phone:"",
-        site:"",
-        latitude:"",
-        longitude:"",
-        region_id:""
+      name: "",
+      description: "", 
+      adress:"",
+      postal:"",
+      hour:"",
+      phone:"",
+      site:"",
+      latitude:"",
+      longitude:"",
+      region_id:""
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-}
+  }
 
-validateForm() {
+  validateForm() {
     return (this.state.name.length > 0 && this.state.adress.length > 0 
       && this.state.postal.length > 0 && this.state.phone.length > 0 
       && this.state.latitude.length > 0 && this.state.longitude.length > 0);
-}
+  }
 
-handleChange = event => {
+  handleChange = event => {
     this.setState({
-        [event.target.id]: event.target.value
+      [event.target.id]: event.target.value
     });
-}
+  }
 
-
-handleSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
 
     const poi = {
-        name: this.state.name,
-        adress: this.state.adress,
-        postal: this.state.postal,
-        phone: this.state.phone,
-        latitude: this.state.latitude,
-        longitude: this.state.longitude,
-        description: this.state.description,
-        site: this.state.site,
-        hour: this.state.hour,
-        region_id: this.state.region_id,
-        isCreate: false
+      name: this.state.name,
+      adress: this.state.adress,
+      postal: this.state.postal,
+      phone: this.state.phone,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+      description: this.state.description,
+      site: this.state.site,
+      hour: this.state.hour,
+      region_id: this.state.region_id,
+      isCreate: false
     };
-    console.log(poi);
+    // console.log(poi);
 
     axios.post(`http://127.0.0.1:3333/poi/create`, poi)
-        .then(res => {
-            console.log(res.data);              
-        })
-        .catch(error => {
-            console.log(error)
-        });
-}
+    .then(res => {
+      // console.log(res.data); 
+      this.setState({ isCreate: true }); 
+      alert("successfully created !");  
+    })
+    .catch(error => {
+    // console.log(error)
+    this.setState({ result: "Please fill in the required fields * !" });
+      alert(this.state.result);
+    });
+  }
 
   render() {
     if (this.state.isCreate) {
-      return <Redirect to={{ pathname: "/admin/Poi" }} />;
-  } else {
+      return (
+      <div>
+        <Redirect to={{ pathname: "/admin/Poi" }} />
+      </div>
+      )
+    } else {
     return (
-      <div className="content">
-        <Grid fluid>
-          <Row>
-          <select class="selectpicker " data-style="select-with-transition" title="Single Select" data-size="7">
-    <option disabled>Choose city</option>
-    <option value="2">Foobar</option>
-    <option value="3">Is great</option>
-</select>
-          </Row>
-        <Row>
-            <Col md={8}>
-            <Link to={"/Admin/Poi"} className="btn btn-primary">Back</Link>
-            <br />
-            </Col>
-        </Row>
+    <div className="content">
+      <Grid fluid>
         <Row>
           <Col md={8}>
-            <select class="selectpicker " data-style="select-with-transition" title="Single Select">
-              <option disabled>Choose city</option>
-              <option value="2">Foobar</option>
-              <option value="3">Is great</option>
-            </select>
+          <Link to={"/Admin/Poi"} className="btn btn-primary">Back</Link>
+          <br />
           </Col>
         </Row>
         <Row>
@@ -130,6 +120,16 @@ handleSubmit = event => {
                 category="Please fill in the required fields *"
                 content={
                   <form onSubmit={this.handleSubmit}>
+                    {/* select pour la region en cours
+                    <label>
+                      Region :
+                      <select value={this.state.region_id} onChange={this.handleChange}>
+                        <option value="grapefruit">Pamplemousse</option>
+                        <option value="lime">Citron vert</option>
+                        <option value="coconut">Noix de coco</option>
+                        <option value="mango">Mangue</option>
+                      </select>
+                    </label> */}
                     <FormInputs
                       ncols={["col-md-12"]}
                       properties={[
@@ -143,7 +143,7 @@ handleSubmit = event => {
                         }
                       ]}
                     />
-                      <FormInputs
+                    <FormInputs
                       ncols={["col-md-12"]}
                       properties={[
                         {  
@@ -168,20 +168,20 @@ handleSubmit = event => {
                           id:"phone"
                         },
                       ]}
-                      />
-                      <FormInputs
-                    ncols={["col-md-12"]}
-                        properties={[
+                    />
+                    <FormInputs
+                      ncols={["col-md-12"]}
+                      properties={[
                         {
-                            label: "Site",
-                            type: "text",
-                            bsClass: "form-control",
-                            placeholder: "Site",
-                            controlId:"site",
-                            onChange:this.handleChange,
-                            id:"site"  
-                          }
-                        ]}
+                          label: "Site",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Site",
+                          controlId:"site",
+                          onChange:this.handleChange,
+                          id:"site"  
+                        }
+                      ]}
                     />
                     <FormInputs
                       ncols={["col-md-12"]}
@@ -208,10 +208,10 @@ handleSubmit = event => {
                           id:"adress"  
                         }
                       ]}
-                      />
-                        <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
+                    />
+                    <FormInputs
+                      ncols={["col-md-12"]}
+                      properties={[
                         {
                           label: "Postal Code *",
                           type: "text",
@@ -222,7 +222,7 @@ handleSubmit = event => {
                         }
                       ]}
                     />
-                     <FormInputs
+                    <FormInputs
                       ncols={["col-md-12"]}
                       properties={[
                         {
@@ -234,10 +234,10 @@ handleSubmit = event => {
                           id:"latitude"  
                         }
                       ]}
-                      />
-                        <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
+                    />
+                    <FormInputs
+                      ncols={["col-md-12"]}
+                      properties={[
                         {
                           label: "Longitude *",
                           type: "text",
@@ -274,7 +274,7 @@ handleSubmit = event => {
         </Grid>   
       </div>
     );
-              }
+    }
   }
 }
 
