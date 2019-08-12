@@ -37,16 +37,18 @@ class CreatePoi extends Component {
     super(props);
 
     this.state = {
+      region_id:"",
       name: "",
-      description: "", 
-      adress:"",
-      postal:"",
-      hour:"",
       phone:"",
       site:"",
-      latitude:"",
+      hour:"",
+      address:"",
+      zipcode:"",
+      city:"",
+      lattitude:"",
       longitude:"",
-      region_id:""
+      description: "", 
+      isCreate: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -54,9 +56,10 @@ class CreatePoi extends Component {
   }
 
   validateForm() {
-    return (this.state.name.length > 0 && this.state.adress.length > 0 
-      && this.state.postal.length > 0 && this.state.phone.length > 0 
-      && this.state.latitude.length > 0 && this.state.longitude.length > 0);
+    return (this.state.name.length > 0 && this.state.address.length > 0 
+      && this.state.city.length > 0 && this.state.zipcode.length > 0
+      && this.state.phone.length > 0 && this.state.lattitude.length > 0 && this.state.longitude.length > 0
+    );
   }
 
   handleChange = event => {
@@ -69,29 +72,29 @@ class CreatePoi extends Component {
     event.preventDefault();
 
     const poi = {
+      region_id: this.state.region_id,
       name: this.state.name,
-      adress: this.state.adress,
-      postal: this.state.postal,
       phone: this.state.phone,
-      latitude: this.state.latitude,
-      longitude: this.state.longitude,
-      description: this.state.description,
       site: this.state.site,
       hour: this.state.hour,
-      region_id: this.state.region_id,
-      isCreate: false
+      address: this.state.address,
+      zipcode: this.state.zipcode,
+      city: this.state.city,
+      lattitude: this.state.lattitude,
+      longitude: this.state.longitude,
+      description: this.state.description
     };
-    // console.log(poi);
+    console.log(poi);
 
     axios.post(`http://127.0.0.1:3333/poi/create`, poi)
     .then(res => {
-      // console.log(res.data); 
+      console.log(res.data); 
       this.setState({ isCreate: true }); 
       alert("successfully created !");  
     })
     .catch(error => {
-    // console.log(error)
-    this.setState({ result: "Please fill in the required fields * !" });
+    console.log(error)
+    this.setState({ result: "Error, field is required" });
       alert(this.state.result);
     });
   }
@@ -187,10 +190,10 @@ class CreatePoi extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {  
-                          label: "Horaire",
+                          label: "Hour",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Horaire",
+                          placeholder: "Hour",
                           onChange:this.handleChange,
                           id:"hour"
                         }
@@ -203,9 +206,9 @@ class CreatePoi extends Component {
                           label: "Address *",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Adress",
+                          placeholder: "Address",
                           onChange:this.handleChange,
-                          id:"adress"  
+                          id:"address"  
                         }
                       ]}
                     />
@@ -213,12 +216,12 @@ class CreatePoi extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Postal Code *",
+                          label: "ZIP Code *",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "ZIP Code",
                           onChange:this.handleChange,
-                          id:"postal"  
+                          id:"zipcode"  
                         }
                       ]}
                     />
@@ -226,12 +229,25 @@ class CreatePoi extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Latitude *",
+                          label: "City *",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Latitude",
+                          placeholder: "City",
                           onChange:this.handleChange,
-                          id:"latitude"  
+                          id:"city"  
+                        }
+                      ]}
+                    />
+                    <FormInputs
+                      ncols={["col-md-12"]}
+                      properties={[
+                        {
+                          label: "Lattitude *",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "Lattitude",
+                          onChange:this.handleChange,
+                          id:"lattitude"  
                         }
                       ]}
                     />

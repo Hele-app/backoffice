@@ -45,7 +45,6 @@ class EditPoi extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
 
   handleChange = event => {
     let poiss = this.state.poiss;
@@ -69,11 +68,13 @@ class EditPoi extends Component {
     });
   }
 
-  validateForm() {
-    return (this.state.name.length > 0 && this.state.adress.length > 0 
-      && this.state.postal.length > 0 && this.state.phone.length > 0 
-      && this.state.latitude.length > 0 && this.state.longitude.length > 0);
-  }
+  // validateForm() {
+  //   return (this.state.name.length > 0 && this.state.address.length > 0 
+  //     && this.state.city.length > 0 && this.state.zipcode.length > 0
+  //     && this.state.phone.length > 0 && this.state.lattitude.length > 
+  //     0 && this.state.longitude.length > 0
+  //   );
+  // }
 
   componentDidMount(){
   // console.log("here", this.state.id);
@@ -160,7 +161,7 @@ class EditPoi extends Component {
                         ncols={["col-md-12"]}
                         properties={[
                           {  
-                            label: "Horaire",
+                            label: "Hour",
                             type: "text",
                             bsClass: "form-control",
                             placeholder: "Horaire",
@@ -174,13 +175,13 @@ class EditPoi extends Component {
                         ncols={["col-md-12"]}
                         properties={[
                           {
-                            label: "Adress *",
+                            label: "Address *",
                             type: "text",
                             bsClass: "form-control",
-                            placeholder: "Adress",
+                            placeholder: "Address",
                             onChange:this.handleChange,
-                            id:"adress",
-                            value:this.state.poiss.adress,    
+                            id:"address",
+                            value:this.state.poiss.address,    
                           }
                         ]}
                       />
@@ -188,27 +189,41 @@ class EditPoi extends Component {
                         ncols={["col-md-12"]}
                         properties={[
                           {
-                            label: "Postal Code *",
+                            label: "ZIP Code *",
                             type: "text",
                             bsClass: "form-control",
                             placeholder: "ZIP Code",
                             onChange:this.handleChange,
-                            id:"postal",
-                            value:this.state.poiss.postal,     
+                            id:"zipcode",
+                            value:this.state.poiss.zipcode,     
                           }
                         ]}
                       />
                       <FormInputs
+                      ncols={["col-md-12"]}
+                      properties={[
+                        {
+                          label: "City *",
+                          type: "text",
+                          bsClass: "form-control",
+                          placeholder: "City",
+                          onChange:this.handleChange,
+                          id:"city",
+                          value:this.state.poiss.city,      
+                        }
+                      ]}
+                    />
+                      <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
                           {
-                            label: "Latitude *",
+                            label: "Lattitude *",
                             type: "text",
                             bsClass: "form-control",
-                            placeholder: "Latitude",
+                            placeholder: "Lattitude",
                             onChange:this.handleChange,
-                            id:"latitude",
-                            value:this.state.poiss.latitude,  
+                            id:"lattitude",
+                            value:this.state.poiss.lattitude,  
                           }
                         ]}
                       />
@@ -241,7 +256,7 @@ class EditPoi extends Component {
                           </FormGroup>
                         </Col>
                       </Row>
-                      <Button bsStyle="info" disabled={!this.validateForm()} pullRight fill type="submit">
+                      <Button bsStyle="info" /*disabled={!this.validateForm()} */pullRight fill type="submit">
                         Update POI
                       </Button>
                       <div className="clearfix" />

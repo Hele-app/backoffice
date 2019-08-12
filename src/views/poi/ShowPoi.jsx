@@ -35,15 +35,17 @@ class ShowPoi extends Component {
     super(props);
     this.state = {
       poi: [],
+      region_id:"",
       name: "",
-      phone: "",
-      site: "",
-      hour: "",
-      postal: "",
-      latitude: "",
-      longitude: "",
-      description: "",
-      region_id: "",
+      phone:"",
+      site:"",
+      hour:"",
+      address:"",
+      zipcode:"",
+      city:"",
+      lattitude:"",
+      longitude:"",
+      description: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -80,7 +82,6 @@ handleSubmit = event => {
     axios.get(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
     .then(res => {
       console.log(res.data);
-      // this.setState({deleteMsg: "User is successfully deleted from database"})
     })
     .catch((err) => {
       console.log(err);
@@ -107,8 +108,9 @@ handleSubmit = event => {
                         <td>Site</td>
                         <td>Hour</td>
                         <td>Address</td>
-                        <td>Postal code</td>
-                        <td>Latitude</td>
+                        <td>Zip code</td>
+                        <td>City</td>
+                        <td>Lattitude</td>
                         <td>Longitude</td>
                         <td>Description</td>
                         <td>region_id</td>
@@ -124,9 +126,10 @@ handleSubmit = event => {
                               <td>{pois.phone}</td>
                               <td>{pois.site}</td>
                               <td>{pois.hour}</td>
-                              <td>{pois.adress}</td>
-                              <td>{pois.postal}</td>
-                              <td>{pois.latitude}</td>
+                              <td>{pois.address}</td>
+                              <td>{pois.zipcode}</td>
+                              <td>{pois.city}</td>
+                              <td>{pois.lattitude}</td>
                               <td>{pois.longitude}</td>
                               <td>{pois.description}</td>
                               <td>{pois.region_id}</td>
