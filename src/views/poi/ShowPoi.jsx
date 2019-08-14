@@ -58,9 +58,7 @@ class ShowPoi extends Component {
       console.log(response.data);
       this.setState({ 
         poi: response.data,
-      });
-      console.log(this.props);
-      
+      });      
       console.log(response);
     })
     .catch(function (error) {
@@ -113,7 +111,7 @@ handleSubmit = event => {
                         <td>Lattitude</td>
                         <td>Longitude</td>
                         <td>Description</td>
-                        <td>region_id</td>
+                        <td>Region_id</td>
                         <td colspan="3">Action poi</td>
                       </tr>
                     </thead>

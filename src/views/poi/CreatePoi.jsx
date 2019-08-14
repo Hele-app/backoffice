@@ -37,7 +37,7 @@ class CreatePoi extends Component {
     super(props);
 
     this.state = {
-      region_id:"",
+      // region_id:"",
       name: "",
       phone:"",
       site:"",
@@ -48,11 +48,38 @@ class CreatePoi extends Component {
       lattitude:"",
       longitude:"",
       description: "", 
-      isCreate: false
+      isCreate: false,
+      regions:[],
+      region_id: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  componentDidMount(){
+    // console.log("here", this.state.id);
+    axios.get(`http://127.0.0.1:3333/poi/region`)
+    .then(response => {
+        console.log(response.data);
+        this.setState({ 
+          regions: response.data
+      });
+      console.log(this.state.regions)
+      // console.log("data", response.data);
+      // console.log("name", response.data.name);
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
+
+  handleInputChange(event) {
+    this.setState({
+      region_id: event.target.value
+    });
+    // console.log(this.state.region_id)
   }
 
   validateForm() {
@@ -72,7 +99,7 @@ class CreatePoi extends Component {
     event.preventDefault();
 
     const poi = {
-      region_id: this.state.region_id,
+      // region_id: this.state.region_id,
       name: this.state.name,
       phone: this.state.phone,
       site: this.state.site,
@@ -82,9 +109,11 @@ class CreatePoi extends Component {
       city: this.state.city,
       lattitude: this.state.lattitude,
       longitude: this.state.longitude,
-      description: this.state.description
+      description: this.state.description,
+      region_id: this.state.region_id
     };
     console.log(poi);
+    console.log(this.state.region_id);
 
     axios.post(`http://127.0.0.1:3333/poi/create`, poi)
     .then(res => {
@@ -123,29 +152,10 @@ class CreatePoi extends Component {
                 category="Please fill in the required fields *"
                 content={
                   <form onSubmit={this.handleSubmit}>
-                    {/* select pour la region en cours
                     <label>
-                      Region :
-                      <select value={this.state.region_id} onChange={this.handleChange}>
-                        <option value="grapefruit">Pamplemousse</option>
-                        <option value="lime">Citron vert</option>
-                        <option value="coconut">Noix de coco</option>
-                        <option value="mango">Mangue</option>
-                      </select>
-                    </label> */}
-                    <FormInputs
-                      ncols={["col-md-12"]}
-                      properties={[
-                        {  
-                          label: "region_id *",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "region_id",
-                          onChange:this.handleChange,
-                          id:"region_id"
-                        }
-                      ]}
-                    />
+                    Select region :
+                      <select value={this.state.region_id} onChange={this.handleInputChange}>{this.state.regions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}</select> *
+                    </label>
                     <FormInputs
                       ncols={["col-md-12"]}
                       properties={[

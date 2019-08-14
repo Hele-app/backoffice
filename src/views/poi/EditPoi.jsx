@@ -39,7 +39,9 @@ class EditPoi extends Component {
     this.state = {
       id: this.props.match.params.id,
       poiss: {},
-      isModify: false
+      isModify: false,
+      regions: [],
+      region_id:""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -52,6 +54,7 @@ class EditPoi extends Component {
     this.setState({
       poiss: poiss
     });
+      console.log(this.state.poiss)
   }
 
   handleSubmit = event => {
@@ -67,7 +70,6 @@ class EditPoi extends Component {
       // console.log(error)
     });
   }
-
   // validateForm() {
   //   return (this.state.name.length > 0 && this.state.address.length > 0 
   //     && this.state.city.length > 0 && this.state.zipcode.length > 0
@@ -78,13 +80,20 @@ class EditPoi extends Component {
 
   componentDidMount(){
   // console.log("here", this.state.id);
-    axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`)
-    .then(response => {
+  Promise.all([
+    axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`),
+    axios.get(`http://127.0.0.1:3333/poi/region`)
+  ])
+    .then(([response, resregion]) => {
       console.log(response.data);
+      console.log(resregion.data);
       this.setState({ 
-        poiss: response.data
+        poiss: response.data,
+        regions: resregion.data
     });
     console.log(this.state.poiss)
+    console.log(this.state.regions)
+    console.log(this.state.regions[0].name)
     // console.log("data", response.data);
     // console.log("name", response.data.name);
     })
@@ -114,6 +123,10 @@ class EditPoi extends Component {
                 category="Please fill in the required fields *"
                 content={
                   <form onSubmit={this.handleSubmit}>
+                      <label>
+                        Region :
+                        <select id="region_id" value={this.state.poiss.region_id} onChange={this.handleChange}>{this.state.regions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}</select> *
+                      </label>
                       <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
