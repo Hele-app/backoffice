@@ -35,6 +35,7 @@ class ShowPoi extends Component {
     super(props);
     this.state = {
       poi: [],
+      regions:[],
       region_id:"",
       name: "",
       phone:"",
@@ -53,13 +54,14 @@ class ShowPoi extends Component {
   }
   
   componentDidMount(){
-    axios.get('http://127.0.0.1:3333/poi')
-    .then(response => {
+      axios.get('http://127.0.0.1:3333/poi')
+    .then((response) => {
       console.log(response.data);
       this.setState({ 
-        poi: response.data,
-      });      
-      console.log(response);
+        poi: response.data
+      });     
+      console.log(this.state.regions) 
+      console.log(this.state.regions[0].name);
     })
     .catch(function (error) {
       console.log(error);
@@ -111,12 +113,13 @@ handleSubmit = event => {
                         <td>Lattitude</td>
                         <td>Longitude</td>
                         <td>Description</td>
-                        <td>Region_id</td>
+                        <td>Region</td>
                         <td colspan="3">Action poi</td>
                       </tr>
                     </thead>
                     <tbody>
                       {this.state.poi.map((pois) => {
+                        console.log(pois)
                         return (
                           <tr>
                               <td>{pois.id}</td>
@@ -130,7 +133,7 @@ handleSubmit = event => {
                               <td>{pois.lattitude}</td>
                               <td>{pois.longitude}</td>
                               <td>{pois.description}</td>
-                              <td>{pois.region_id}</td>
+                              <td>{pois.region.name}</td>
                               <td>
                                 <Link to={"/Admin/EditPoi/"+pois.id} className="btn btn-primary">Edit</Link>
                               </td>
