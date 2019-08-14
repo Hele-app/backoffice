@@ -21,14 +21,10 @@ import {
   Row,
   Col
 } from "react-bootstrap";
-
-
 import ShowPoi from "./ShowPoi.jsx";
 import { Link} from "react-router-dom";
 
-
 class Poi extends Component {
-
 
   render() {
     return (

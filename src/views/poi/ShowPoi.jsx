@@ -34,7 +34,7 @@ class ShowPoi extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      poi: [],
+      pois: [],
       regions:[],
       region_id:"",
       name: "",
@@ -58,7 +58,7 @@ class ShowPoi extends Component {
     .then((response) => {
       console.log(response.data);
       this.setState({ 
-        poi: response.data
+        pois: response.data
       });     
       console.log(this.state.regions) 
       console.log(this.state.regions[0].name);
@@ -69,22 +69,20 @@ class ShowPoi extends Component {
   }  
   
   handleChange = event => {
-  // console.log(event.target.id)
     this.setState({
-        [event.target.id]: event.target.value
+      [event.target.id]: event.target.value
     });
-}
+  }
 
-
-handleSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
 
     axios.get(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
     .then(res => {
-      console.log(res.data);
+      // console.log(res.data);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     })
   }
 
@@ -114,31 +112,31 @@ handleSubmit = event => {
                         <td>Longitude</td>
                         <td>Description</td>
                         <td>Region</td>
-                        <td colspan="3">Action poi</td>
+                        <td colspan="2">Action poi</td>
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.poi.map((pois) => {
-                        console.log(pois)
+                      {this.state.pois.map((poi) => {
+                        // console.log(pois)
                         return (
                           <tr>
-                              <td>{pois.id}</td>
-                              <td>{pois.name}</td>
-                              <td>{pois.phone}</td>
-                              <td>{pois.site}</td>
-                              <td>{pois.hour}</td>
-                              <td>{pois.address}</td>
-                              <td>{pois.zipcode}</td>
-                              <td>{pois.city}</td>
-                              <td>{pois.lattitude}</td>
-                              <td>{pois.longitude}</td>
-                              <td>{pois.description}</td>
-                              <td>{pois.region.name}</td>
+                              <td>{poi.id}</td>
+                              <td>{poi.name}</td>
+                              <td>{poi.phone}</td>
+                              <td>{poi.site}</td>
+                              <td>{poi.hour}</td>
+                              <td>{poi.address}</td>
+                              <td>{poi.zipcode}</td>
+                              <td>{poi.city}</td>
+                              <td>{poi.lattitude}</td>
+                              <td>{poi.longitude}</td>
+                              <td>{poi.description}</td>
+                              <td>{poi.region.name}</td>
                               <td>
-                                <Link to={"/Admin/EditPoi/"+pois.id} className="btn btn-primary">Edit</Link>
+                                <Link to={"/Admin/EditPoi/"+poi.id} className="btn btn-primary">Edit</Link>
                               </td>
                               <td>
-                                <td><Link className="btn btn-danger" to={"/Admin/DeletePoi/"+pois.id}>Delete</Link></td>
+                                <td><Link className="btn btn-danger" to={"/Admin/DeletePoi/"+poi.id}>Delete</Link></td>
                               </td>
                               <p style={{color: 'green'}}>{this.state.addMsg}</p>
                           </tr>

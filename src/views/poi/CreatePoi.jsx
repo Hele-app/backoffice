@@ -37,7 +37,6 @@ class CreatePoi extends Component {
     super(props);
 
     this.state = {
-      // region_id:"",
       name: "",
       phone:"",
       site:"",
@@ -59,16 +58,13 @@ class CreatePoi extends Component {
   }
 
   componentDidMount(){
-    // console.log("here", this.state.id);
     axios.get(`http://127.0.0.1:3333/poi/region`)
     .then(response => {
-        console.log(response.data);
-        this.setState({ 
-          regions: response.data
+      // console.log(response.data);
+      this.setState({ 
+        regions: response.data
       });
       console.log(this.state.regions)
-      // console.log("data", response.data);
-      // console.log("name", response.data.name);
     })
     .catch(function (error) {
       console.log(error);
@@ -79,7 +75,6 @@ class CreatePoi extends Component {
     this.setState({
       region_id: event.target.value
     });
-    // console.log(this.state.region_id)
   }
 
   validateForm() {
@@ -99,7 +94,6 @@ class CreatePoi extends Component {
     event.preventDefault();
 
     const poi = {
-      // region_id: this.state.region_id,
       name: this.state.name,
       phone: this.state.phone,
       site: this.state.site,
@@ -112,17 +106,16 @@ class CreatePoi extends Component {
       description: this.state.description,
       region_id: this.state.region_id
     };
-    console.log(poi);
-    console.log(this.state.region_id);
+    // console.log(poi);
 
     axios.post(`http://127.0.0.1:3333/poi/create`, poi)
     .then(res => {
-      console.log(res.data); 
+      // console.log(res.data); 
       this.setState({ isCreate: true }); 
       alert("successfully created !");  
     })
     .catch(error => {
-    console.log(error)
+    // console.log(error)
     this.setState({ result: "Error, field is required" });
       alert(this.state.result);
     });

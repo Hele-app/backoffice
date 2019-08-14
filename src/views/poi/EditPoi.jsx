@@ -54,7 +54,7 @@ class EditPoi extends Component {
     this.setState({
       poiss: poiss
     });
-      console.log(this.state.poiss)
+    // console.log(this.state.poiss)
   }
 
   handleSubmit = event => {
@@ -79,43 +79,32 @@ class EditPoi extends Component {
   // }
 
   componentDidMount(){
-  // console.log("here", this.state.id);
-  Promise.all([
-    axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`),
-    axios.get(`http://127.0.0.1:3333/poi/region`)
-  ])
+    Promise.all([
+      axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`),
+      axios.get(`http://127.0.0.1:3333/poi/region`)
+    ])
     .then(([response, resregion]) => {
-      console.log(response.data);
-      console.log(resregion.data);
+      // console.log(response.data);
+      // console.log(resregion.data);
       this.setState({ 
         poiss: response.data,
         regions: resregion.data
     });
-    console.log(this.state.poiss)
-    console.log(this.state.regions)
-    console.log(this.state.regions[0].name)
-    // console.log("data", response.data);
-    // console.log("name", response.data.name);
+    // console.log(this.state.poiss)
+    // console.log(this.state.regions)
     })
     .catch(function (error) {
-      console.log(error);
+      // console.log(error);
     })
   }
   
   render() {
-  // console.log(this.state.poiss)
   if (this.state.isModify) {
     return <Redirect to={{ pathname: "/admin/Poi" }} />;
   } else {
     return (
       <div className="content">
         <Grid fluid>
-        <Row>
-            <Col md={8}>
-            <Link to={"/Admin/Poi"} className="btn btn-primary">Back</Link>
-            <br />
-            </Col>
-        </Row>
         <Row>
             <Col md={8}>
               <Card
@@ -276,6 +265,12 @@ class EditPoi extends Component {
                   </form>
                 }
               />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={8}>
+            <Link to={"/Admin/Poi"} className="btn btn-primary">Back</Link>
+            <br />
             </Col>
           </Row>
         </Grid>   
