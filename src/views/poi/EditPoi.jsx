@@ -31,6 +31,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router'
 
+import Api from '../../config/Api';
+
 class EditPoi extends Component {
 
   constructor(props) {
@@ -38,7 +40,19 @@ class EditPoi extends Component {
 
     this.state = {
       id: this.props.match.params.id,
-      poiss: {},
+      poiss: {
+        name: '',
+        phone: '',
+        site: '',
+        hour: '',
+        address: '',
+        zipcode: '',
+        city: '',
+        region_id: '',
+        lattitude: '',
+        longitude: '',
+        description: ''
+      },
       isModify: false,
       regions: [],
       region_id:""
@@ -60,222 +74,207 @@ class EditPoi extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    axios.post(`http://127.0.0.1:3333/poi/update/${this.state.id}`, this.state.poiss)
+    axios.put(Api.url(`/poi/update/${this.state.id}`), this.state.poiss)
     .then(res => {
-      // console.log(res.data);  
-      this.setState({ isCreate: true }); 
-      alert("successfully update !");              
+      this.setState({ isModify: true });
     })
     .catch(error => {
-      // console.log(error)
+      console.error(error)
     });
   }
-  // validateForm() {
-  //   return (this.state.name.length > 0 && this.state.address.length > 0 
-  //     && this.state.city.length > 0 && this.state.zipcode.length > 0
-  //     && this.state.phone.length > 0 && this.state.lattitude.length > 
-  //     0 && this.state.longitude.length > 0
-  //   );
-  // }
 
   componentDidMount(){
     Promise.all([
-      axios.get(`http://127.0.0.1:3333/poi/edit/${this.state.id}`),
-      axios.get(`http://127.0.0.1:3333/poi/region`)
+      axios.get(Api.url(`/poi/edit/${this.state.id}`)),
+      axios.get(Api.url(`/region`))
     ])
     .then(([response, resregion]) => {
-      // console.log(response.data);
-      // console.log(resregion.data);
-      this.setState({ 
+      this.setState({
         poiss: response.data,
         regions: resregion.data
-    });
-    // console.log(this.state.poiss)
-    // console.log(this.state.regions)
+      });
     })
     .catch(function (error) {
-      // console.log(error);
+      console.error(error);
     })
   }
-  
+
   render() {
-  if (this.state.isModify) {
-    return <Redirect to={{ pathname: "/admin/Poi" }} />;
-  } else {
-    return (
-      <div className="content">
-        <Grid fluid>
-        <Row>
-            <Col md={8}>
-              <Card
-                title="Edit POI"
-                category="Please fill in the required fields *"
-                content={
-                  <form onSubmit={this.handleSubmit}>
-                      <label>
-                        Region :
-                        <select id="region_id" value={this.state.poiss.region_id} onChange={this.handleChange}>{this.state.regions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}</select> *
-                      </label>
+    if (this.state.isModify) {
+      return <Redirect to={{ pathname: "/admin/poi" }} />;
+    } else {
+      return (
+        <div className="content">
+          <Grid fluid>
+            <Row>
+              <Col md={8}>
+                <Link to={"/admin/poi"} className="btn btn-primary">Back</Link>
+                <br />
+              </Col>
+            </Row>
+            <br />
+            <Row>
+              <Col md={12}>
+                <Card
+                  title="Edit POI"
+                  category="Please fill in the required fields *"
+                  content={
+                    <form onSubmit={this.handleSubmit}>
                       <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
-                          {  
+                          {
                             label: "Name *",
                             type: "text",
-                            bsClass: "form-control",
                             placeholder: "Name",
-                            value:this.state.poiss.name,
-                            onChange:this.handleChange,
-                            id:"name"
+                            value: this.state.poiss.name,
+                            onChange: this.handleChange,
+                            id: "name"
                           }
                         ]}
-                      />
+                        />
                       <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
                           {
                             label: "Phone *",
                             type: "text",
-                            bsClass: "form-control",
                             placeholder: "Phone",
-                            onChange:this.handleChange,
-                            id:"phone",
-                            value:this.state.poiss.phone,
+                            value: this.state.poiss.phone,
+                            onChange: this.handleChange,
+                            id: "phone",
                           },
                         ]}
-                      />
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                          properties={[
-                            {
-                              label: "Site",
-                              type: "text",
-                              bsClass: "form-control",
-                              placeholder: "Site",
-                              controlId:"site",
-                              onChange:this.handleChange,
-                              id:"site",
-                              value:this.state.poiss.site,  
-                            }
-                          ]}
-                      />
+                        />
                       <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
-                          {  
-                            label: "Hour",
+                          {
+                            label: "Site",
                             type: "text",
-                            bsClass: "form-control",
-                            placeholder: "Horaire",
-                            onChange:this.handleChange,
-                            id:"hour",
-                            value:this.state.poiss.hour,  
+                            placeholder: "Site",
+                            value: this.state.poiss.site,
+                            onChange: this.handleChange,
+                            id: "site",
                           }
                         ]}
-                      />
+                        />
+                      <FormInputs
+                        ncols={["col-md-12"]}
+                        properties={[
+                          {
+                            label: "Hour",
+                            type: "text",
+                            placeholder: "Horaire",
+                            value: this.state.poiss.hour,
+                            onChange: this.handleChange,
+                            id: "hour",
+                          }
+                        ]}
+                        />
                       <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
                           {
                             label: "Address *",
                             type: "text",
-                            bsClass: "form-control",
                             placeholder: "Address",
-                            onChange:this.handleChange,
-                            id:"address",
-                            value:this.state.poiss.address,    
+                            value: this.state.poiss.address,
+                            onChange: this.handleChange,
+                            id: "address",
                           }
                         ]}
-                      />
+                        />
                       <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
                           {
                             label: "ZIP Code *",
                             type: "text",
-                            bsClass: "form-control",
                             placeholder: "ZIP Code",
-                            onChange:this.handleChange,
-                            id:"zipcode",
-                            value:this.state.poiss.zipcode,     
+                            value: this.state.poiss.zipcode,
+                            onChange: this.handleChange,
+                            id: "zipcode",
                           }
                         ]}
-                      />
+                        />
                       <FormInputs
-                      ncols={["col-md-12"]}
-                      properties={[
-                        {
-                          label: "City *",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "City",
-                          onChange:this.handleChange,
-                          id:"city",
-                          value:this.state.poiss.city,      
-                        }
-                      ]}
-                    />
+                        ncols={["col-md-12"]}
+                        properties={[
+                          {
+                            label: "City *",
+                            type: "text",
+                            placeholder: "City",
+                            value: this.state.poiss.city,
+                            onChange: this.handleChange,
+                            id: "city",
+                          }
+                        ]}
+                        />
+                      <Row>
+                        <Col md={12}>
+                          <FormGroup>
+                            <ControlLabel>Region *</ControlLabel>
+                            <FormControl componentClass="select" id="region_id" value={this.state.poiss.region_id} onChange={this.handleChange}>
+                              {this.state.regions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}
+                            </FormControl>
+                          </FormGroup>
+                        </Col>
+                      </Row>
                       <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
                           {
                             label: "Lattitude *",
                             type: "text",
-                            bsClass: "form-control",
                             placeholder: "Lattitude",
-                            onChange:this.handleChange,
-                            id:"lattitude",
-                            value:this.state.poiss.lattitude,  
+                            value: this.state.poiss.lattitude,
+                            onChange: this.handleChange,
+                            id: "lattitude",
                           }
                         ]}
-                      />
+                        />
                       <FormInputs
                         ncols={["col-md-12"]}
                         properties={[
                           {
                             label: "Longitude *",
                             type: "text",
-                            bsClass: "form-control",
                             placeholder: "Longitude",
-                            onChange:this.handleChange,
-                            id:"longitude",
-                            value:this.state.poiss.longitude,  
+                            value: this.state.poiss.longitude,
+                            onChange: this.handleChange,
+                            id: "longitude",
                           }
                         ]}
-                      />
+                        />
                       <Row>
                         <Col md={12}>
-                          <FormGroup controlId="description">
+                          <FormGroup>
                             <ControlLabel>Description</ControlLabel>
                             <FormControl
                               rows="5"
                               componentClass="textarea"
                               bsClass="form-control"
                               placeholder="Here can be your description"
+                              value={this.state.poiss.description || ''}
                               onChange={this.handleChange}
-                              value={this.state.poiss.description}
-                            />
+                              id="description"
+                              />
                           </FormGroup>
                         </Col>
                       </Row>
-                      <Button bsStyle="info" /*disabled={!this.validateForm()} */pullRight fill type="submit">
+                      <Button bsStyle="info" pullRight fill type="submit">
                         Update POI
                       </Button>
                       <div className="clearfix" />
-                  </form>
-                }
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={8}>
-            <Link to={"/Admin/Poi"} className="btn btn-primary">Back</Link>
-            <br />
-            </Col>
-          </Row>
-        </Grid>   
-      </div>
-    );
+                    </form>
+                  }
+                  />
+              </Col>
+            </Row>
+          </Grid>
+        </div>
+      );
     }
   }
 }

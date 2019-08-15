@@ -34,7 +34,7 @@ import Login from "./views/Login.jsx"
 ReactDOM.render(
     <BrowserRouter>
         <Switch>
-            <Route path="/login" component={ Login } />
+            <Route path="/login" component={Login} />
             <Authentication path="/admin" component={AdminLayout} />
             <Redirect from="/" to="/admin/dashboard" />
         </Switch>

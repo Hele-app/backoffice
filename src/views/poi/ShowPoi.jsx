@@ -17,10 +17,10 @@
 */
 import React, { Component } from "react";
 import {
-  Grid,
-  Row,
-  Col,
-  Table
+    Grid,
+    Row,
+    Col,
+    Table
 } from "react-bootstrap";
 
 
@@ -29,129 +29,107 @@ import { Link} from "react-router-dom";
 
 import axios from 'axios';
 
+import Api from '../../config/Api';
+
 class ShowPoi extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      pois: [],
-      regions:[],
-      region_id:"",
-      name: "",
-      phone:"",
-      site:"",
-      hour:"",
-      address:"",
-      zipcode:"",
-      city:"",
-      lattitude:"",
-      longitude:"",
-      description: ""
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            pois: [],
+            regions:[],
+            region_id:"",
+            name: "",
+            phone:"",
+            site:"",
+            hour:"",
+            address:"",
+            zipcode:"",
+            city:"",
+            lattitude:"",
+            longitude:"",
+            description: ""
+        };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  
-  componentDidMount(){
-      axios.get('http://127.0.0.1:3333/poi')
-    .then((response) => {
-      console.log(response.data);
-      this.setState({ 
-        pois: response.data
-      });     
-      console.log(this.state.regions) 
-      console.log(this.state.regions[0].name);
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-  }  
-  
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
+        this.handleChange = this.handleChange.bind(this);
+    }
 
-  handleSubmit = event => {
-    event.preventDefault();
+    componentDidMount(){
+        axios.get(Api.url(`/poi`))
+        .then((response) => {
+            this.setState({
+                pois: response.data
+            });
+        })
+        .catch(function (error) {
+            console.error(error);
+        })
+    }
 
-    axios.get(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
-    .then(res => {
-      // console.log(res.data);
-    })
-    .catch((err) => {
-      // console.log(err);
-    })
-  }
+    handleChange = event => {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
+    }
 
-  render() {
-    return (
-      <div className="content">
-          <Grid fluid>
-          <Row>
-          <Col md={12}>
-              <Card
-                title="All poi"
-                ctTableFullWidth
-                ctTableResponsive
-                content={
-                  <Table striped hover>
-                    <thead>
-                      <tr>
-                        <td>id</td>
-                        <td>Name</td>
-                        <td>Phone</td>
-                        <td>Site</td>
-                        <td>Hour</td>
-                        <td>Address</td>
-                        <td>Zip code</td>
-                        <td>City</td>
-                        <td>Lattitude</td>
-                        <td>Longitude</td>
-                        <td>Description</td>
-                        <td>Region</td>
-                        <td colSpan="2">Action poi</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.pois.map((poi) => {
-                        // console.log(pois)
-                        return (
-                          <tr>
-                              <td>{poi.id}</td>
-                              <td>{poi.name}</td>
-                              <td>{poi.phone}</td>
-                              <td>{poi.site}</td>
-                              <td>{poi.hour}</td>
-                              <td>{poi.address}</td>
-                              <td>{poi.zipcode}</td>
-                              <td>{poi.city}</td>
-                              <td>{poi.lattitude}</td>
-                              <td>{poi.longitude}</td>
-                              <td>{poi.description}</td>
-                              <td>{poi.region.name}</td>
-                              <td>
-                                <Link to={"/Admin/EditPoi/"+poi.id} className="btn btn-primary">Edit</Link>
-                              </td>
-                              <td>
-                                <td><Link className="btn btn-danger" to={"/Admin/DeletePoi/"+poi.id}>Delete</Link></td>
-                              </td>
-                              <p style={{color: 'green'}}>{this.state.addMsg}</p>
-                          </tr>
-                        )
-                      })}
-                    </tbody>
-                  </Table>
-                }
-              />
-            </Col>
-          </Row>    
-        </Grid>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="content">
+                <Grid fluid>
+                    <Row>
+                        <Col md={12}>
+                            <Card
+                                title="All poi"
+                                ctTableFullWidth
+                                ctTableResponsive
+                                content={
+                                    <Table striped hover>
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td>Address</td>
+                                                <td>Zip code</td>
+                                                <td>City</td>
+                                                <td>Region</td>
+                                                <td>Phone</td>
+                                                <td>Site</td>
+                                                <td colSpan="2">Action poi</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.pois.map((poi) => {
+                                                return (
+                                                    <tr key={poi.id}>
+                                                        <td>{poi.name}</td>
+                                                        <td>{poi.address}</td>
+                                                        <td>{poi.zipcode}</td>
+                                                        <td>{poi.city}</td>
+                                                        <td>{poi.region.name}</td>
+                                                        <td>{poi.phone}</td>
+                                                        <td>{poi.site}</td>
+                                                        <td>
+                                                            <Link className="btn btn-warning" to={`/admin/poi/edit/${poi.id}`}>
+                                                                <i className="pe-7s-pen"></i>
+                                                            </Link>
+                                                        </td>
+                                                        <td>
+                                                            <Link className="btn btn-danger" to={`/admin/poi/delete/${poi.id}`}>
+                                                                <i className="pe-7s-trash"></i>
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </Table>
+                                }
+                                />
+                        </Col>
+                    </Row>
+                </Grid>
+            </div>
+        );
+    }
 }
 
 export default ShowPoi;
