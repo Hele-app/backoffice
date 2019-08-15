@@ -40,6 +40,7 @@ class Admin extends Component {
       if (prop.layout === "/admin") {
         return (
           <Route
+            exact
             path={prop.layout + prop.path}
             render={props => (
               <prop.component
@@ -92,9 +93,9 @@ class Admin extends Component {
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>{this.getRoutes(routes)}</Switch>
-          <Route exac path="/Admin/EditPoi/:id" component={EditPoi} />
-          <Route exac path="/Admin/CreatePoi" component={CreatePoi} />
-          <Route exac path="/Admin/DeletePoi/:id" component={DeletePoi} />
+          <Route exact path="/admin/poi/edit/:id" component={EditPoi} />
+          <Route exact path="/admin/poi/create" component={CreatePoi} />
+          <Route exact path="/admin/poi/delete/:id" component={DeletePoi} />
         </div>
       </div>
     );

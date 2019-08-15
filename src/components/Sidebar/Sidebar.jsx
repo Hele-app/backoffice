@@ -16,7 +16,7 @@
 
 */
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
 
@@ -47,20 +47,20 @@ class Sidebar extends Component {
         data-color={this.props.color}
       >
         <div className="logo">
-          <a
-            href="/"
+          <Link
+            to={"/"}
             className="simple-text logo-mini"
           >
             <div className="logo-img">
               <img src={logo} alt="logo_image" />
             </div>
-          </a>
-          <a
-            href="/"
+          </Link>
+          <Link
+            to={"/"}
             className="simple-text logo-normal"
           >
             Dashboard Admin
-          </a>
+          </Link>
         </div>
         <div className="sidebar-wrapper">
           <ul className="nav">

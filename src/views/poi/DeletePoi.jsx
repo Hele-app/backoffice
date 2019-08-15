@@ -16,11 +16,18 @@
 
 */
 import React, { Component } from "react";
+import {
+  Grid,
+  Row,
+  Col,
+  Button
+} from "react-bootstrap";
+import { Card } from "components/Card/Card.jsx";
 
-
-import { Redirect} from 'react-router-dom';
+import { Link, Redirect} from 'react-router-dom';
 import axios from 'axios';
 
+import Api from '../../config/Api';
 
 class DeletePoi extends Component {
 
@@ -30,11 +37,12 @@ class DeletePoi extends Component {
       isDelete: false,
       id: this.props.match.params.id
     }
-    console.log(this.props.match.params.id);
+
+    this.handleDelete = this.handleDelete.bind(this);
   }
-  
-  delete() {
-    axios.get(`http://127.0.0.1:3333/poi/delete/${this.state.id}`)
+
+  handleDelete() {
+    axios.delete(Api.url(`/poi/delete/${this.state.id}`))
     .then(res => {
       this.setState({
         isDelete: true,
@@ -45,19 +53,34 @@ class DeletePoi extends Component {
       console.log(error);
     })
   }
-  
+
   render() {
     if (this.state.isDelete) {
-      return <Redirect to={{ pathname: "/Admin/Poi" }} />;
+      return <Redirect to={{ pathname: "/admin/poi" }} />;
     } else {
       return(
-        <div>
-          <h1>Supprimer la poi</h1>
-          <p>Voulez-vous supprimer cette poi? </p>
-          <div>
-            <button onClick={this.delete()}>Oui</button>
-            <button href="/Admin/Poi">Non</button>
-          </div>
+        <div className="content">
+          <Grid fluid>
+            <Row>
+              <Col md={12}>
+                <Card
+                  title="Supprimer le POI"
+                  ctTableFullWidth
+                  ctTableResponsive
+                  content={
+                    <div>
+                      <p>Voulez-vous supprimer ce poi?</p>
+                      <div>
+                        <Button className="btn btn-danger" onClick={this.handleDelete}>Oui</Button>
+                        
+                        <Link className="btn btn-default" to={`/admin/poi`}>Non</Link>
+                      </div>
+                    </div>
+                  }
+                  />
+              </Col>
+            </Row>
+          </Grid>
         </div>
       );
     }

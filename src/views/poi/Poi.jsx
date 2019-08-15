@@ -32,7 +32,7 @@ class Poi extends Component {
         <Grid fluid>
           <Row>
             <Col md={12}>
-              <Link to={"/Admin/CreatePoi"} className="btn btn-primary">Create POI</Link>
+              <Link to={"/admin/poi/create"} className="btn btn-primary">Create POI</Link>
             </Col>
           </Row>
         </Grid>
