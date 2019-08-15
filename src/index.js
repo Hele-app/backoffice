@@ -31,22 +31,14 @@ import AdminLayout from "layouts/Admin.jsx";
 import Authentication from "./middlewares/Authentication.jsx"
 import Login from "./views/Login.jsx"
 
-// ReactDOM.render(
-//   <BrowserRouter>
-//     <Switch>
-//       <Route path="/login" component={ Login } />
-//       <Authentication path="/admin" component={AdminLayout} />
-//       <Redirect from="/" to="/admin/dashboard" />
-//     </Switch>
-//   </BrowserRouter>,
-//   document.getElementById("root")
-// );
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
-      <Redirect from="/" to="/admin/dashboard" />
-    </Switch>
-  </BrowserRouter>,
-  document.getElementById("root")
+    <BrowserRouter>
+        <Switch>
+            <Route path="/login" component={ Login } />
+            <Authentication path="/admin" component={AdminLayout} />
+            // <Route path="/admin" render={props => <AdminLayout {...props} />} />
+            <Redirect from="/" to="/admin/dashboard" />
+        </Switch>
+    </BrowserRouter>,
+    document.getElementById("root")
 );
