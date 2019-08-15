@@ -15,24 +15,32 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard.jsx";
-import Poi from "views/poi/Poi.jsx";
+import React, { Component } from "react";
+import {
+  Grid,
+  Row,
+  Col
+} from "react-bootstrap";
+import ShowPoi from "./ShowPoi.jsx";
+import { Link} from "react-router-dom";
 
-const dashboardRoutes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "pe-7s-graph",
-    component: Dashboard,
-      layout: "/admin"
-  },
-  {
-    path: "/Poi",
-    name: "CRUD Poi",
-    icon: "pe-7s-global",
-    component: Poi,
-    layout: "/admin"
+class Poi extends Component {
+
+  render() {
+    return (
+      <div className="content">
+        <Grid fluid>
+          <Row>
+            <Col md={12}>
+              <Link to={"/Admin/CreatePoi"} className="btn btn-primary">Create POI</Link>
+            </Col>
+          </Row>
+        </Grid>
+        <br />
+        <ShowPoi />
+      </div>
+    );
   }
-];
+}
 
-export default dashboardRoutes;
+export default Poi;

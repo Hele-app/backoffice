@@ -23,6 +23,10 @@ import Sidebar from "components/Sidebar/Sidebar";
 
 import routes from "routes.js";
 
+import EditPoi from "../views/poi/EditPoi.jsx";
+import CreatePoi from "../views/poi/CreatePoi.jsx";
+import DeletePoi from "../views/poi/DeletePoi.jsx";
+
 class Admin extends Component {
   constructor(props) {
     super(props);
@@ -63,15 +67,6 @@ class Admin extends Component {
     }
     return "Brand";
   };
-  handleImageClick = image => {
-    this.setState({ image: image });
-  };
-  handleColorClick = color => {
-    this.setState({ color: color });
-  };
-  handleHasImage = hasImage => {
-    this.setState({ hasImage: hasImage });
-  };
   componentDidUpdate(e) {
     if (
       window.innerWidth < 993 &&
@@ -97,6 +92,9 @@ class Admin extends Component {
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>{this.getRoutes(routes)}</Switch>
+          <Route exac path="/Admin/EditPoi/:id" component={EditPoi} />
+          <Route exac path="/Admin/CreatePoi" component={CreatePoi} />
+          <Route exac path="/Admin/DeletePoi/:id" component={DeletePoi} />
         </div>
       </div>
     );
