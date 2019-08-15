@@ -112,7 +112,7 @@ class ShowPoi extends Component {
                         <td>Longitude</td>
                         <td>Description</td>
                         <td>Region</td>
-                        <td colspan="2">Action poi</td>
+                        <td colSpan="2">Action poi</td>
                       </tr>
                     </thead>
                     <tbody>
