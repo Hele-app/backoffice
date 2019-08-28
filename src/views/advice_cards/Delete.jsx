@@ -46,11 +46,11 @@ class DeleteAdviceCards extends Component {
     const headers = {
       'Authorization': 'bearer ' + token,
     }
-    axios.delete(Api.url(`/advicecards/delete/${this.state.id}`), {headers: headers})
+    axios.delete(Api.url(`/advice-card/${this.state.id}`), {headers: headers})
     .then(res => {
       this.setState({
         isDelete: true,
-        deleteMsg: "advice cards is successfully deleted from database"
+        // deleteMsg: "advice cards is successfully deleted from database"
       })
     })
     .catch(error => {

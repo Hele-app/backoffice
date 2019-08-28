@@ -134,6 +134,7 @@ class IndexAdviceCards extends Component {
                   <Table striped hover>
                     <thead>
                       <tr>
+                        <td>Id</td>
                         <td>Content</td>
                         <td colSpan="2">Action advice cards</td>
                       </tr>
@@ -142,8 +143,10 @@ class IndexAdviceCards extends Component {
                       {this.state.contents.map((cont) => {
                         return (
                           <tr key={cont.id}>
-                            <td>{cont.content}</td>                                <td>
-                              <Link className="btn btn-danger" to={`/admin/advicecards/delete/${cont.id}`}>
+                            <td>{cont.id}</td> 
+                            <td>{cont.content}</td>                                
+                            <td>
+                              <Link className="btn btn-danger" to={`/admin/advice-cards/${cont.id}`}>
                                 <i className="pe-7s-trash"></i>
                               </Link>
                             </td> 

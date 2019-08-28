@@ -26,6 +26,7 @@ import routes from "routes.js";
 import EditPoi from "../views/poi/EditPoi.jsx";
 import CreatePoi from "../views/poi/CreatePoi.jsx";
 import DeletePoi from "../views/poi/DeletePoi.jsx";
+import DeleteAdviceCards from "../views/advice_cards/Delete.jsx";
 
 class Admin extends Component {
   constructor(props) {
@@ -96,6 +97,7 @@ class Admin extends Component {
           <Route exact path="/admin/poi/edit/:id" component={EditPoi} />
           <Route exact path="/admin/poi/create" component={CreatePoi} />
           <Route exact path="/admin/poi/delete/:id" component={DeletePoi} />
+          <Route exact path="/admin/advice-cards/:id" component={DeleteAdviceCards} />
         </div>
       </div>
     );
