@@ -75,7 +75,12 @@ class IndexAdviceCards extends Component {
       content: this.state.content
     };
 
-    axios.post(Api.url(`/advice-card`), advices)
+    const token = localStorage.getItem('token'); 
+    const headers = {
+      'Authorization': 'bearer ' + token,
+    }
+
+    axios.post(Api.url(`/advice-card`), advices, {headers: headers})
     .then(res => {
       console.log(res.data);
     })
@@ -101,7 +106,7 @@ class IndexAdviceCards extends Component {
                           <ControlLabel>Content *</ControlLabel>
                           <FormControl
                             rows="5"
-                            componentClass="textarea"
+                            type="file"
                             bsClass="form-control"
                             placeholder="Here can be your text"
                             onChange={this.handleChange}
