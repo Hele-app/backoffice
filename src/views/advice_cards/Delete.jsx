@@ -20,263 +20,66 @@ import {
   Grid,
   Row,
   Col,
-  FormGroup,
-  ControlLabel,
-  FormControl
+  Button
 } from "react-bootstrap";
-import { Link} from "react-router-dom";
 import { Card } from "components/Card/Card.jsx";
-import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
+
+import { Link, Redirect} from 'react-router-dom';
 import axios from 'axios';
-import { Redirect } from 'react-router'
 
 import Api from '../../config/Api';
 
-class CreatePoi extends Component {
+class DeleteAdviceCards extends Component {
 
-  constructor(props) {
-    super(props);
-
+  constructor(props){
+    super(props)
     this.state = {
-      name: "",
-      phone:"",
-      site:"",
-      hour:"",
-      address:"",
-      zipcode:"",
-      city:"",
-      lattitude:"",
-      longitude:"",
-      description: "",
-      isCreate: false,
-      regions:[],
-      region_id: ""
-    };
+      isDelete: false,
+      id: this.props.match.params.id
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
-  componentDidMount(){
-    axios.get(Api.url(`/region`))
-    .then(response => {
-      // console.log(response.data);
+  handleDelete() {
+    const token = localStorage.getItem('token'); 
+    const headers = {
+      'Authorization': 'bearer ' + token,
+    }
+    axios.delete(Api.url(`/advicecards/delete/${this.state.id}`), {headers: headers})
+    .then(res => {
       this.setState({
-        regions: response.data
-      });
-      console.log(this.state.regions)
+        isDelete: true,
+        deleteMsg: "advice cards is successfully deleted from database"
+      })
     })
-    .catch(function (error) {
+    .catch(error => {
       console.log(error);
     })
   }
 
-  handleInputChange(event) {
-    this.setState({
-      region_id: event.target.value
-    });
-  }
-
-  validateForm() {
-    return (this.state.name.length > 0 && this.state.address.length > 0
-      && this.state.city.length > 0 && this.state.zipcode.length > 0
-      && this.state.phone.length > 0 && this.state.lattitude.length > 0 && this.state.longitude.length > 0
-    );
-  }
-
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
-
-  handleSubmit = event => {
-    event.preventDefault();
-
-    const poi = {
-      name: this.state.name,
-      phone: this.state.phone,
-      site: this.state.site,
-      hour: this.state.hour,
-      address: this.state.address,
-      zipcode: this.state.zipcode,
-      city: this.state.city,
-      lattitude: this.state.lattitude,
-      longitude: this.state.longitude,
-      description: this.state.description,
-      region_id: this.state.region_id
-    };
-    // console.log(poi);
-
-    axios.post(Api.url(`/poi/create`), poi)
-    .then(res => {
-      this.setState({ isCreate: true });
-    })
-    .catch(error => {
-      console.error(error)
-    });
-  }
-
   render() {
-    if (this.state.isCreate) {
-      return <Redirect to={{ pathname: "/admin/Poi" }} />
+    if (this.state.isDelete) {
+      return <Redirect to={{ pathname: "/admin/advicecards" }} />;
     } else {
-      return (
+      return(
         <div className="content">
           <Grid fluid>
             <Row>
               <Col md={12}>
-                <Link to={"/admin/poi"} className="btn btn-primary">Back</Link>
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col md={12}>
                 <Card
-                  title="Create POI"
-                  category="Please fill in the required fields *"
+                  title="Delete the advice cards"
+                  ctTableFullWidth
+                  ctTableResponsive
                   content={
-                    <form onSubmit={this.handleSubmit}>
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "Name *",
-                            type: "text",
-                            placeholder: "Name",
-                            onChange: this.handleChange,
-                            id: "name"
-                          }
-                        ]}
-                        />
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "Phone *",
-                            type: "text",
-                            placeholder: "Phone",
-                            onChange: this.handleChange,
-                            id: "phone"
-                          },
-                        ]}
-                        />
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "Site",
-                            type: "text",
-                            placeholder: "Site",
-                            onChange: this.handleChange,
-                            id: "site"
-                          }
-                        ]}
-                        />
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "Hour",
-                            type: "text",
-                            placeholder: "Hour",
-                            onChange: this.handleChange,
-                            id: "hour"
-                          }
-                        ]}
-                        />
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "Address *",
-                            type: "text",
-                            placeholder: "Address",
-                            onChange: this.handleChange,
-                            id: "address"
-                          }
-                        ]}
-                        />
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "ZIP Code *",
-                            type: "text",
-                            placeholder: "ZIP Code",
-                            onChange: this.handleChange,
-                            id: "zipcode"
-                          }
-                        ]}
-                        />
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "City *",
-                            type: "text",
-                            placeholder: "City",
-                            onChange: this.handleChange,
-                            id: "city"
-                          }
-                        ]}
-                        />
-                      <Row>
-                        <Col md={12}>
-                          <FormGroup>
-                            <ControlLabel>Region *</ControlLabel>
-                            <FormControl componentClass="select" id="region_id" onChange={this.handleChange}>
-                              {this.state.regions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}
-                            </FormControl>
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "Lattitude *",
-                            type: "text",
-                            placeholder: "Lattitude",
-                            onChange: this.handleChange,
-                            id: "lattitude"
-                          }
-                        ]}
-                        />
-                      <FormInputs
-                        ncols={["col-md-12"]}
-                        properties={[
-                          {
-                            label: "Longitude *",
-                            type: "text",
-                            placeholder: "Longitude",
-                            onChange: this.handleChange,
-                            id: "longitude"
-                          }
-                        ]}
-                        />
-                      <Row>
-                        <Col md={12}>
-                          <FormGroup>
-                            <ControlLabel>Description</ControlLabel>
-                            <FormControl
-                              rows="5"
-                              componentClass="textarea"
-                              bsClass="form-control"
-                              placeholder="Here can be your description"
-                              onChange={this.handleChange}
-                              id="description"
-                              />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                      <Button bsStyle="info" pullRight fill type="submit">
-                        Create POI
-                      </Button>
-                      <div className="clearfix" />
-                    </form>
+                    <div>
+                      <p>Do you want to delete ce advice cards?</p>
+                      <div>
+                        <Button className="btn btn-danger" onClick={this.handleDelete}>Oui</Button>
+                        
+                        <Link className="btn btn-default" to={`/admin/advicecards`}>Non</Link>
+                      </div>
+                    </div>
                   }
                   />
               </Col>
@@ -288,4 +91,4 @@ class CreatePoi extends Component {
   }
 }
 
-export default CreatePoi;
+export default DeleteAdviceCards;

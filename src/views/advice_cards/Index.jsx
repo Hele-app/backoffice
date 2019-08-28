@@ -22,14 +22,13 @@ import {
   Col,
   FormGroup,
   ControlLabel,
-  FormControl
+  FormControl,
+  Table
 } from "react-bootstrap";
 import { Link} from "react-router-dom";
 import { Card } from "components/Card/Card.jsx";
-import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import axios from 'axios';
-import { Redirect } from 'react-router'
 
 import Api from '../../config/Api';
 
@@ -39,28 +38,30 @@ class IndexAdviceCards extends Component {
     super(props);
 
     this.state = {
-      content: ""
+      content: "",
+      contents: []
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount(){
-    axios.get(Api.url(`/region`))
+    const token = localStorage.getItem('token'); 
+    const headers = {
+      'Authorization': 'bearer ' + token,
+    }
+    
+    axios.get(Api.url(`/advice-card`), {headers: headers})
     .then(response => {
       // console.log(response.data);
+      this.setState({
+        contents: response.data
+      });
     })
     .catch(function (error) {
-      console.log(error);
+      // console.log(error);
     })
   }
-
-  // validateForm() {
-  //   return (this.state.name.length > 0 && this.state.address.length > 0
-  //     && this.state.city.length > 0 && this.state.zipcode.length > 0
-  //     && this.state.phone.length > 0 && this.state.lattitude.length > 0 && this.state.longitude.length > 0
-  //   );
-  // }
 
   handleChange = event => {
     this.setState({
@@ -97,67 +98,65 @@ class IndexAdviceCards extends Component {
             <Col md={12}>
               <Card
                 title="Create new advice cards"
-                category="Please fill in the required fields *"
                 content={
                   <form onSubmit={this.handleSubmit}>  
                     <Row>
                       <Col md={12}>
                         <FormGroup>
-                          <ControlLabel>Content *</ControlLabel>
+                          <ControlLabel>Upload your file</ControlLabel>
                           <FormControl
-                            rows="5"
                             type="file"
                             bsClass="form-control"
-                            placeholder="Here can be your text"
                             onChange={this.handleChange}
                             id="content"
-                            />
+                          />
                         </FormGroup>
                       </Col>
                     </Row>
                     <Button bsStyle="info" pullRight fill type="submit">
-                      Create advice cards
+                      Upload
                     </Button>
                     <div className="clearfix" />
                   </form>
                 }
-                />
+              />
             </Col>
           </Row>
         </Grid>
-        {/* <Grid fluid>
+        <Grid fluid>
           <Row>
             <Col md={12}>
               <Card
-                title="Show advice cards"
-                category="Please fill in the required fields *"
+                title="All advice cards"
+                ctTableFullWidth
+                ctTableResponsive
                 content={
-                  <form onSubmit={this.handleSubmit}>  
-                    <Row>
-                      <Col md={12}>
-                        <FormGroup>
-                          <ControlLabel>Text *</ControlLabel>
-                          <FormControl
-                            rows="5"
-                            componentClass="textarea"
-                            bsClass="form-control"
-                            placeholder="Here can be your text"
-                            onChange={this.handleChange}
-                            id="text"
-                            />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Button bsStyle="info" pullRight fill type="submit">
-                      Create advice cards
-                    </Button>
-                    <div className="clearfix" />
-                  </form>
+                  <Table striped hover>
+                    <thead>
+                      <tr>
+                        <td>Content</td>
+                        <td colSpan="2">Action advice cards</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.contents.map((cont) => {
+                        return (
+                          <tr key={cont.id}>
+                            <td>{cont.content}</td>                                <td>
+                              <Link className="btn btn-danger" to={`/admin/advicecards/delete/${cont.id}`}>
+                                <i className="pe-7s-trash"></i>
+                              </Link>
+                            </td> 
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </Table>
                 }
-                />
+              />
             </Col>
           </Row>
-        </Grid> */}
+        </Grid>
       </div>
     );
   }
