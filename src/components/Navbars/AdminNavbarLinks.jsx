@@ -19,12 +19,21 @@ import React, { Component } from "react";
 import { NavItem, Nav } from "react-bootstrap";
 
 class AdminNavbarLinks extends Component {
+  _logout (event) {
+    event.preventDefault();
+    localStorage.clear();
+    window.location.href = '/';
+  }
+
   render() {
     return (
       <div>
         <Nav pullRight>
-          <NavItem eventKey={1} href="#" >
-            Log out
+          <NavItem eventKey={1} href="#" onClick={this._logout}>
+            <p>
+              <i className="pe-7s-back-2"></i>&nbsp;
+              Log out
+            </p>
           </NavItem>
         </Nav>
       </div>

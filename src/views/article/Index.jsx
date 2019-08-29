@@ -48,9 +48,9 @@ class IndexArticle extends Component {
   }
 
   componentDidMount(){
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     const headers = {
-      'Authorization': 'bearer ' + token,
+      'Authorization': 'Bearer ' + token,
     }
     axios.get(Api.url(`/articles`), {headers: headers})
     .then(response => {
@@ -76,18 +76,18 @@ class IndexArticle extends Component {
   }
 
   handleSubmit = event => {
+    event.preventDefault();
     var bodyFormData = new FormData();
     bodyFormData.set('title', this.state.title);
-    // bodyFormData.set('path', this.state.path);
     bodyFormData.append('article_pdf', this.state.path);
 
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     const headers = {
-      'Authorization': 'bearer ' + token,
+      'Authorization': 'Bearer ' + token,
       'Content-Type': 'multipart/form-data'
     }
 
-    axios.post(Api.url(`/article/upload`), bodyFormData, {headers: headers})
+    axios.post(Api.url(`/article/upload`), bodyFormData, {headers})
     .then(res => {
       console.log(res.data);
     })
@@ -105,7 +105,7 @@ class IndexArticle extends Component {
               <Card
                 title="Create new article"
                 content={
-                  <form onSubmit={this.handleSubmit}>  
+                  <form onSubmit={this.handleSubmit}>
                     <Row>
                       <Col md={12}>
                         <FormGroup>
@@ -164,13 +164,13 @@ class IndexArticle extends Component {
                       {this.state.articles.map((articl) => {
                         return (
                           <tr key={articl.id}>
-                            <td>{articl.id}</td> 
-                            <td>{articl.title}</td>                                 
+                            <td>{articl.id}</td>
+                            <td>{articl.title}</td>
                             <td>
                               <Link className="btn btn-danger" to={`/admin/article/${articl.id}`}>
                                 <i className="pe-7s-trash"></i>
                               </Link>
-                            </td> 
+                            </td>
                           </tr>
                         )
                       })}
