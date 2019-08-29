@@ -77,7 +77,8 @@ class IndexArticle extends Component {
 
   handleSubmit = event => {
     var bodyFormData = new FormData();
-    bodyFormData.set('title', 'path');
+    bodyFormData.set('title', this.state.title);
+    // bodyFormData.set('path', this.state.path);
     bodyFormData.append('article_pdf', this.state.path);
 
     const token = localStorage.getItem('token'); 
@@ -156,7 +157,6 @@ class IndexArticle extends Component {
                       <tr>
                         <td>Id</td>
                         <td>Title</td>
-                        <td>Path</td>
                         <td colSpan="2">Action articles</td>
                       </tr>
                     </thead>
@@ -165,8 +165,7 @@ class IndexArticle extends Component {
                         return (
                           <tr key={articl.id}>
                             <td>{articl.id}</td> 
-                            <td>{articl.title}</td>    
-                            <td>{articl.path}</td>                              
+                            <td>{articl.title}</td>                                 
                             <td>
                               <Link className="btn btn-danger" to={`/admin/article/${articl.id}`}>
                                 <i className="pe-7s-trash"></i>
