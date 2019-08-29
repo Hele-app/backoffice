@@ -36,7 +36,6 @@ class IndexAdviceCards extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       content: "",
       contents: []
@@ -50,16 +49,13 @@ class IndexAdviceCards extends Component {
     const headers = {
       'Authorization': 'bearer ' + token,
     }
-    
     axios.get(Api.url(`/advice-card`), {headers: headers})
     .then(response => {
-      // console.log(response.data);
       this.setState({
         contents: response.data
       });
     })
     .catch(function (error) {
-      // console.log(error);
     })
   }
 
@@ -70,7 +66,6 @@ class IndexAdviceCards extends Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
 
     const advices = {
       content: this.state.content
