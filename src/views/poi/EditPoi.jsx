@@ -49,7 +49,7 @@ class EditPoi extends Component {
         zipcode: '',
         city: '',
         region_id: '',
-        lattitude: '',
+        latitude: '',
         longitude: '',
         description: ''
       },
@@ -225,12 +225,12 @@ class EditPoi extends Component {
                         ncols={["col-md-12"]}
                         properties={[
                           {
-                            label: "Lattitude *",
+                            label: "latitude *",
                             type: "text",
-                            placeholder: "Lattitude",
-                            value: this.state.poiss.lattitude,
+                            placeholder: "latitude",
+                            value: this.state.poiss.latitude,
                             onChange: this.handleChange,
-                            id: "lattitude",
+                            id: "latitude",
                           }
                         ]}
                         />

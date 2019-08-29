@@ -46,7 +46,7 @@ class ShowPoi extends Component {
             address:"",
             zipcode:"",
             city:"",
-            lattitude:"",
+            latitude:"",
             longitude:"",
             description: ""
         };
