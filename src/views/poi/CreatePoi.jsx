@@ -46,7 +46,7 @@ class CreatePoi extends Component {
       address:"",
       zipcode:"",
       city:"",
-      lattitude:"",
+      latitude:"",
       longitude:"",
       description: "",
       isCreate: false,
@@ -82,7 +82,7 @@ class CreatePoi extends Component {
   validateForm() {
     return (this.state.name.length > 0 && this.state.address.length > 0
       && this.state.city.length > 0 && this.state.zipcode.length > 0
-      && this.state.phone.length > 0 && this.state.lattitude.length > 0 && this.state.longitude.length > 0
+      && this.state.phone.length > 0 && this.state.latitude.length > 0 && this.state.longitude.length > 0
     );
   }
 
@@ -103,7 +103,7 @@ class CreatePoi extends Component {
       address: this.state.address,
       zipcode: this.state.zipcode,
       city: this.state.city,
-      lattitude: this.state.lattitude,
+      latitude: this.state.latitude,
       longitude: this.state.longitude,
       description: this.state.description,
       region_id: this.state.region_id
@@ -237,11 +237,11 @@ class CreatePoi extends Component {
                         ncols={["col-md-12"]}
                         properties={[
                           {
-                            label: "Lattitude *",
+                            label: "latitude *",
                             type: "text",
-                            placeholder: "Lattitude",
+                            placeholder: "latitude",
                             onChange: this.handleChange,
-                            id: "lattitude"
+                            id: "latitude"
                           }
                         ]}
                         />
