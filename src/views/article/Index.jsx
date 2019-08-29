@@ -28,19 +28,22 @@ import {
 import { Link} from "react-router-dom";
 import { Card } from "components/Card/Card.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
+import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import axios from 'axios';
 
 import Api from '../../config/Api';
 
-class IndexAdviceCards extends Component {
+class IndexArticle extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      content: "",
-      contents: []
+      title: "",
+      path: "",
+      articles: []
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeFile = this.handleChangeFile.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -49,11 +52,13 @@ class IndexAdviceCards extends Component {
     const headers = {
       'Authorization': 'bearer ' + token,
     }
-    axios.get(Api.url(`/advice-card`), {headers: headers})
+    axios.get(Api.url(`/articles`), {headers: headers})
     .then(response => {
+      console.log(response.data)
       this.setState({
-        contents: response.data
+        articles: response.data
       });
+      console.log(this.state.articles)
     })
     .catch(function (error) {
     })
@@ -64,19 +69,24 @@ class IndexAdviceCards extends Component {
       [event.target.id]: event.target.value
     });
   }
+  handleChangeFile = event => {
+    this.setState({
+      [event.target.id]: event.target.files[0]
+    });
+  }
 
   handleSubmit = event => {
-
-    const advices = {
-      content: this.state.content
-    };
+    var bodyFormData = new FormData();
+    bodyFormData.set('title', 'path');
+    bodyFormData.append('article_pdf', this.state.path);
 
     const token = localStorage.getItem('token'); 
     const headers = {
       'Authorization': 'bearer ' + token,
+      'Content-Type': 'multipart/form-data'
     }
 
-    axios.post(Api.url(`/advice-card`), advices, {headers: headers})
+    axios.post(Api.url(`/article/upload`), bodyFormData, {headers: headers})
     .then(res => {
       console.log(res.data);
     })
@@ -92,18 +102,33 @@ class IndexAdviceCards extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="Create new advice cards"
+                title="Create new article"
                 content={
                   <form onSubmit={this.handleSubmit}>  
                     <Row>
                       <Col md={12}>
                         <FormGroup>
                           <ControlLabel>Upload your file</ControlLabel>
+                          <FormInputs
+                            ncols={["col-md-12"]}
+                            properties={[
+                              {
+                                label: "Title *",
+                                type: "text",
+                                placeholder: "Title",
+                                onChange: this.handleChange,
+                                id: "title",
+                                name: "title"
+                              }
+                            ]}
+                          />
                           <FormControl
                             type="file"
+                            accept="application/pdf"
                             bsClass="form-control"
-                            onChange={this.handleChange}
-                            id="content"
+                            onChange={this.handleChangeFile}
+                            id="path"
+                            name="path"
                           />
                         </FormGroup>
                       </Col>
@@ -122,7 +147,7 @@ class IndexAdviceCards extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="All advice cards"
+                title="All articles"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -130,18 +155,20 @@ class IndexAdviceCards extends Component {
                     <thead>
                       <tr>
                         <td>Id</td>
-                        <td>Content</td>
-                        <td colSpan="2">Action advice cards</td>
+                        <td>Title</td>
+                        <td>Path</td>
+                        <td colSpan="2">Action articles</td>
                       </tr>
                     </thead>
                     <tbody>
-                      {this.state.contents.map((cont) => {
+                      {this.state.articles.map((articl) => {
                         return (
-                          <tr key={cont.id}>
-                            <td>{cont.id}</td> 
-                            <td>{cont.content}</td>                                
+                          <tr key={articl.id}>
+                            <td>{articl.id}</td> 
+                            <td>{articl.title}</td>    
+                            <td>{articl.path}</td>                              
                             <td>
-                              <Link className="btn btn-danger" to={`/admin/advice-cards/${cont.id}`}>
+                              <Link className="btn btn-danger" to={`/admin/article/${articl.id}`}>
                                 <i className="pe-7s-trash"></i>
                               </Link>
                             </td> 
@@ -160,4 +187,4 @@ class IndexAdviceCards extends Component {
   }
 }
 
-export default IndexAdviceCards;
+export default IndexArticle;

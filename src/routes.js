@@ -17,7 +17,8 @@
 */
 import Dashboard from "views/Dashboard.jsx";
 import Poi from "views/poi/Poi.jsx";
-import IndexAdviceCards from "views/advice_cards/Index.jsx";
+import IndexAdviceCard from "views/advice_card/Index.jsx";
+import IndexArticle from "views/article/Index.jsx";
 
 const dashboardRoutes = [
   {
@@ -36,9 +37,16 @@ const dashboardRoutes = [
   },
   {
     path: "/advicecards",
-    name: "CRUD Advice cards",
+    name: "CRUD Advice card",
+    icon: "pe-7s-note2",
+    component: IndexAdviceCard,
+    layout: "/admin"
+  },
+  {
+    path: "/articles",
+    name: "CRUD article",
     icon: "pe-7s-news-paper",
-    component: IndexAdviceCards,
+    component: IndexArticle,
     layout: "/admin"
   }
 ];

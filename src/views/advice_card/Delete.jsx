@@ -29,7 +29,7 @@ import axios from 'axios';
 
 import Api from '../../config/Api';
 
-class DeleteAdviceCards extends Component {
+class DeleteAdviceCard extends Component {
 
   constructor(props){
     super(props)
@@ -73,7 +73,7 @@ class DeleteAdviceCards extends Component {
                   ctTableResponsive
                   content={
                     <div>
-                      <p>Do you want to delete ce advice cards?</p>
+                      <p>Do you want to delete this advice cards?</p>
                       <div>
                         <Button className="btn btn-danger" onClick={this.handleDelete}>Oui</Button>
                         
@@ -91,4 +91,4 @@ class DeleteAdviceCards extends Component {
   }
 }
 
-export default DeleteAdviceCards;
+export default DeleteAdviceCard;
