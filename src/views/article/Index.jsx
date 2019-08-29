@@ -50,7 +50,7 @@ class IndexArticle extends Component {
   componentDidMount(){
     const token = localStorage.getItem('token');
     const headers = {
-      'Authorization': 'bearer ' + token,
+      'Authorization': 'Bearer ' + token,
     }
     axios.get(Api.url(`/articles`), {headers: headers})
     .then(response => {
