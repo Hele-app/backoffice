@@ -59,8 +59,13 @@ class CreatePoi extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  componentDidMount(){
-    axios.get(Api.url(`/region`))
+  async componentDidMount() {
+    const token = await localStorage.getItem('token');
+    const headers = {
+      'Authorization': 'bearer ' + token,
+    };
+
+    axios.get(Api.url(`/region`), {headers: headers})
     .then(response => {
       // console.log(response.data);
       this.setState({

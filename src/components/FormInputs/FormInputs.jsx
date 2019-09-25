@@ -19,10 +19,23 @@ import React, { Component } from "react";
 import { FormGroup, ControlLabel, FormControl, Row } from "react-bootstrap";
 
 function FieldGroup({ label, ...props }) {
+  let options = null;
+  if (props.componentClass === "select" && props.options !== undefined) {
+    options = props.options.map((prop, key) => {
+      if (typeof prop === "object") {
+        return (<option key={key} value={prop.id}>{prop.name}</option>);
+      }
+      else {
+        return (<option key={key} value={prop}>{prop}</option>)
+      }
+    });
+  }
   return (
     <FormGroup>
       <ControlLabel>{label}</ControlLabel>
-      <FormControl {...props} />
+      <FormControl {...props} >
+        {options}
+      </FormControl>
     </FormGroup>
   );
 }

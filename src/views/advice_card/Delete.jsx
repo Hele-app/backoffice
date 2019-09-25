@@ -42,7 +42,7 @@ class DeleteAdviceCard extends Component {
   }
 
   handleDelete() {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     const headers = {
       'Authorization': 'bearer ' + token,
     }
@@ -68,15 +68,15 @@ class DeleteAdviceCard extends Component {
             <Row>
               <Col md={12}>
                 <Card
-                  title="Delete the advice cards"
+                  title="Supprimer la fiche conseille"
                   ctTableFullWidth
                   ctTableResponsive
                   content={
-                    <div>
-                      <p>Do you want to delete this advice cards?</p>
-                      <div>
-                        <Button className="btn btn-danger" onClick={this.handleDelete}>Oui</Button>
-                        
+                    <div style={{margin: '15px'}}>
+                      <p>Voulez-vous supprimer cette fiche conseille ?</p>
+                        <div>
+                        <Button className="btn btn-danger" style={{marginRight: '5px'}} onClick={this.handleDelete}>Oui</Button>
+
                         <Link className="btn btn-default" to={`/admin/advicecards`}>Non</Link>
                       </div>
                     </div>

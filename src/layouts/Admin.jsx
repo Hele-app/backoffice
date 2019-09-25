@@ -23,6 +23,7 @@ import Sidebar from "components/Sidebar/Sidebar";
 
 import routes from "routes.js";
 
+import ProForm from "../views/pros/ProForm.jsx";
 import EditPoi from "../views/poi/EditPoi.jsx";
 import CreatePoi from "../views/poi/CreatePoi.jsx";
 import DeletePoi from "../views/poi/DeletePoi.jsx";
@@ -95,6 +96,7 @@ class Admin extends Component {
             brandText={this.getBrandText(this.props.location.pathname)}
           />
           <Switch>{this.getRoutes(routes)}</Switch>
+          <Route exact path="/admin/pros/form" component={ProForm} />
           <Route exact path="/admin/poi/edit/:id" component={EditPoi} />
           <Route exact path="/admin/poi/create" component={CreatePoi} />
           <Route exact path="/admin/poi/delete/:id" component={DeletePoi} />

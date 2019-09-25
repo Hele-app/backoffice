@@ -45,10 +45,10 @@ class IndexAdviceCard extends Component {
   }
 
   componentDidMount(){
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     const headers = {
       'Authorization': 'bearer ' + token,
-    }
+    };
     axios.get(Api.url(`/advice-card`), {headers: headers})
     .then(response => {
       this.setState({
@@ -56,7 +56,7 @@ class IndexAdviceCard extends Component {
       });
     })
     .catch(function (error) {
-    })
+    });
   }
 
   handleChange = event => {
@@ -65,23 +65,27 @@ class IndexAdviceCard extends Component {
     });
   }
 
-  handleSubmit = event => {
+  handleSubmit = async event => {
+    event.preventDefault();
 
     const advices = {
       content: this.state.content
     };
 
-    const token = localStorage.getItem('token'); 
+    const token = await localStorage.getItem('token');
     const headers = {
       'Authorization': 'bearer ' + token,
-    }
+    };
 
     axios.post(Api.url(`/advice-card`), advices, {headers: headers})
-    .then(res => {
-      console.log(res.data);
+      .then(res => {
+        this.setState({
+          content: "",
+          contents: [...this.state.contents, res.data]
+        });
     })
     .catch(error => {
-      console.error(error)
+	    console.error(error);
     });
   }
 
@@ -92,13 +96,13 @@ class IndexAdviceCard extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="Create new advice card"
+                title="Ajouter une nouvelle fiche conseille"
                 content={
-                  <form onSubmit={this.handleSubmit}>  
+                  <form onSubmit={this.handleSubmit}>
                     <Row>
                       <Col md={12}>
                         <FormGroup>
-                          <ControlLabel>Content</ControlLabel>
+                          <ControlLabel>Contenu</ControlLabel>
                           <FormControl
                             type="text"
                             bsClass="form-control"
@@ -109,7 +113,7 @@ class IndexAdviceCard extends Component {
                       </Col>
                     </Row>
                     <Button bsStyle="info" pullRight fill type="submit">
-                      Upload
+                      Ajouter
                     </Button>
                     <div className="clearfix" />
                   </form>
@@ -122,7 +126,7 @@ class IndexAdviceCard extends Component {
           <Row>
             <Col md={12}>
               <Card
-                title="All advice cards"
+                title="Les fiches conseilles"
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -130,23 +134,23 @@ class IndexAdviceCard extends Component {
                     <thead>
                       <tr>
                         <td>Id</td>
-                        <td>Content</td>
-                        <td colSpan="2">Action advice cards</td>
+                        <td>Contenu</td>
+                        <td colSpan="2">Supprimer</td>
                       </tr>
                     </thead>
                     <tbody>
                       {this.state.contents.map((cont) => {
                         return (
                           <tr key={cont.id}>
-                            <td>{cont.id}</td> 
-                            <td>{cont.content}</td>                                
+                            <td>{cont.id}</td>
+                            <td>{cont.content}</td>
                             <td>
                               <Link className="btn btn-danger" to={`/admin/advice-cards/${cont.id}`}>
                                 <i className="pe-7s-trash"></i>
                               </Link>
-                            </td> 
+                            </td>
                           </tr>
-                        )
+                        );
                       })}
                     </tbody>
                   </Table>
