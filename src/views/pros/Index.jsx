@@ -64,7 +64,8 @@ class IndexPros extends Component {
   closeForm(success) {
     this.setState({
       showForm: false,
-      showNotification: success
+      showNotification: success,
+      userToUpdate: null
     })
   }
 
