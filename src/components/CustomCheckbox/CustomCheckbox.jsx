@@ -28,6 +28,9 @@ class CustomCheckbox extends Component {
   handleClick() {
     this.setState({ is_checked: !this.state.is_checked });
   }
+  componentWillReceiveProps(props) {
+    this.setState({ is_checked: props.isChecked ? true : false });
+  }
   render() {
     const { isChecked, number, label, inline, ...rest } = this.props;
     const classes =

@@ -19,7 +19,7 @@ import React, { Component } from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 
 import Card from "components/Card/Card.jsx";
-import CustomCheckbox from 'components/CustomCheckbox/CustomCheckbox.jsx';
+import Checkbox from 'components/CustomCheckbox/CustomCheckbox';
 import axios from 'axios';
 
 import Api from '../../config/Api';
@@ -32,7 +32,6 @@ class IndexYoungs extends Component {
       youngs: []
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount(){
@@ -40,9 +39,11 @@ class IndexYoungs extends Component {
     const headers = {
       'Authorization': 'bearer ' + token,
     };
-    axios.get(Api.url(`/admin/users`), {headers: headers})
+    const params = {
+      roles: "YOUNG",
+    };
+    axios.get(Api.url(`/admin/users`), {headers: headers, params: params})
       .then(response => {
-        console.log(response.data);
         this.setState({
           youngs: response.data.users
         });
@@ -51,26 +52,25 @@ class IndexYoungs extends Component {
       });
   }
 
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
-
-  handleSubmit = async event => {
-    event.preventDefault();
-
+  async handleChange(event) {
+    event.persist();
+    const id = parseInt(event.target.id);
+    const young = this.state.youngs.find(item => item.id === id);
+    const data = { active: !young.active };
     const token = await localStorage.getItem('token');
     const headers = {
       'Authorization': 'bearer ' + token,
     };
-
-    axios.post(Api.url(`/admin/users`), {}, {headers: headers})
+    axios.put(Api.url(`/admin/users/${event.target.id}`), data, {headers: headers})
       .then(res => {
+        this.setState({youngs: this.state.youngs.map(item => {
+          return item.id === id ? res.data.user : item;
+        })});
       })
       .catch(error => {
 	      console.error(error);
       });
+
   }
 
   render() {
@@ -85,39 +85,40 @@ class IndexYoungs extends Component {
                 ctTableFullWidth
                 ctTableResponsive
                 content={
-                    <Table striped hover>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                  <th>Téléphone</th>
-                                    <th>Pseudonyme</th>
-                                      <th>Actif</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              {this.state.youngs.map((young) => {
-                                if (young.roles === "YOUNG") {
-                                  return (
-                                    <tr key={young.id}>
-                                      <td key='id'>{young.id}</td>
-                                      <td key='phone'>{young.phone}</td>
-                                      <td key='username'>{young.username}</td>
-                                      <td key='active'><CustomCheckbox isChecked={true}/></td>
-                                    </tr>
-                                  );
-                                }
-                                else {
-                                  return null;
-                                }
-                              })}
-                  </tbody>
-                    </Table>
+                  <Table striped hover>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Téléphone</th>
+                        <th>Pseudonyme</th>
+                        <th>Actif</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.youngs.map((young) => {
+                         return (
+                           <tr key={young.id}>
+                             <td key='id'>{young.id}</td>
+                             <td key='phone'>{young.phone}</td>
+                             <td key='username'>{young.username}</td>
+                             <td key='active'>
+                               <Checkbox
+                                 number={young.id}
+                                 isChecked={young.active ? true : false}
+                                 onChange={this.handleChange}
+                               />
+                             </td>
+                           </tr>
+                         );
+                      })}
+                    </tbody>
+                  </Table>
                 }
-        />
-        </Col>
-        </Row>
+              />
+            </Col>
+          </Row>
         </Grid>
-        </div>
+      </div>
     );
   }
 }

@@ -17,6 +17,7 @@
 */
 import Dashboard from "views/Dashboard.jsx";
 import IndexYoungs from "views/youngs/Index.jsx";
+import IndexPros from "views/pros/Index.jsx";
 import Poi from "views/poi/Poi.jsx";
 import IndexAdviceCard from "views/advice_card/Index.jsx";
 import IndexArticle from "views/article/Index.jsx";
@@ -34,6 +35,13 @@ const dashboardRoutes = [
     name: "Jeunes",
     icon: "pe-7s-users",
     component: IndexYoungs,
+    layout: "/admin"
+  },
+  {
+    path: "/pros",
+    name: "Professionnels",
+    icon: "pe-7s-id",
+    component: IndexPros,
     layout: "/admin"
   },
   {
