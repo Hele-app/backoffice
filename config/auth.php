@@ -68,7 +68,6 @@ return [
         'users' => [
             'driver' => 'hele',
         ],
-
         // 'users' => [
         //     'driver' => 'eloquent',
         //     'model' => App\User::class,
