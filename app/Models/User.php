@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Http\Wrapper\HeleApiResource;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HeleApiResource
 {
     use Notifiable;
 
@@ -37,22 +38,22 @@ class User extends Authenticatable
     ];
 
     /**
-     * @param array $response
+     * @param array $data provided from the API
      *
      * @return User
      */
-    public static function mapFromResponse($response)
+    public static function mapFromResponse(array $data)
     {
         $user = new User();
-        $user->id = $response['id'];
-        $user->phone = $response['phone'];
-        $user->username = $response['username'];
-        $user->email = $response['email'];
-        $user->role = $response['role'];
-        $user->profession = $response['profession'];
-        $user->city = $response['city'];
-        $user->phone_pro = $response['phone_pro'];
-        $user->active = $response['active'];
+        $user->id = $data['id'];
+        $user->phone = $data['phone'];
+        $user->username = $data['username'];
+        $user->email = $data['email'];
+        $user->role = $data['role'];
+        $user->profession = $data['profession'];
+        $user->city = $data['city'];
+        $user->phone_pro = $data['phone_pro'];
+        $user->active = $data['active'];
 
         return $user;
     }

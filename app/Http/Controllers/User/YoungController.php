@@ -3,11 +3,19 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Wrapper\HeleApiWrapper;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class YoungController extends Controller
 {
+    /**
+     * An instance of HeleApiWrapper.
+     *
+     * @var HeleApiWrapper
+     */
+    private $hele = null;
+
     /**
      * Create a new controller instance.
      *
@@ -16,6 +24,7 @@ class YoungController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->hele = new HeleApiWrapper();
     }
 
     /**
@@ -23,8 +32,10 @@ class YoungController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $users = $this->hele->paginate(User::class)->call('users.youngs_index', $request->only(['q', 'p']));
+        dd($users);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Wrapper;
 
 use App\Providers\HeleUserProvider;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Http;
 
 class HeleApiWrapper
@@ -18,6 +19,29 @@ class HeleApiWrapper
         'Content-Type' => 'application/json',
         'Accept' => 'application/json',
     ];
+
+    private $withPagination = false;
+    private $withMapping = [];
+
+    public function paginate(string $mapping)
+    {
+        $this->withPagination = true;
+        $this->map($mapping, 'data');
+
+        return $this;
+    }
+
+    public function map(string $mapping, string $field = '.')
+    {
+        $this->withMapping[$field] = $mapping;
+
+        return $this;
+    }
+
+    private function checkForHeleApiResource(string $classname)
+    {
+        return in_array(HeleApiResource::class, class_implements($classname));
+    }
 
     public function call(string $routeName, array $body = [], array $headers = [])
     {
@@ -44,7 +68,34 @@ class HeleApiWrapper
         \Log::debug("$method $url");
         \Log::debug($response->body());
         if ($response->successful()) {
-            return $response->json();
+            $response = $response->json();
+
+            foreach ($this->withMapping as $field => $mapping) {
+                $data = $field === '.' ? $response : $response[$field];
+                if (count(array_filter(array_keys($data), 'is_string')) > 0) {
+                    // the field is a single entity, because it contains string keys
+                    $data = $mapping::mapFromResponse($data);
+                } else {
+                    // the field is an array of entities, because it contains only numeric keys
+                    $data = array_map(fn ($d) => $mapping::mapFromResponse($d), $data);
+                }
+
+                if ($field === '.') {
+                    $response = $data;
+                    break;
+                } else {
+                    $response[$field] = $data;
+                }
+            }
+            $this->withMapping = [];
+
+            if ($this->withPagination === true) {
+                $this->withPagination = false;
+
+                return new LengthAwarePaginator($response['data'], $response['total'], $response['perPage'], $response['page']);
+            } else {
+                return $response;
+            }
         } else {
             \Log::error($response->json());
             $response->throw();

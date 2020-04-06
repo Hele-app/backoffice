@@ -68,9 +68,7 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function retrieveById($identifier)
     {
-        $response = $this->hele->call('auth_check');
-
-        return User::mapFromResponse($response);
+        return $this->hele->map(User::class)->call('auth_check');
     }
 
     /**
@@ -81,9 +79,7 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        $response = $this->hele->call('auth_check');
-
-        return User::mapFromResponse($response);
+        return $this->hele->map(User::class)->call('auth_check');
     }
 
     /**
@@ -105,14 +101,12 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
     public function retrieveByCredentials(array $credentials)
     {
         try {
-            $response = $this->hele->call('login', $credentials);
-
-            $user = User::mapFromResponse($response['user']);
+            $response = $this->hele->map(User::class, 'user')->call('login', $credentials);
 
             session()->put(self::TOKEN, $response['accessToken']['token']);
             session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
 
-            return $user;
+            return $response['user'];
         } catch (RequestException $e) {
             return null;
         }
@@ -126,8 +120,7 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        $response = $this->hele->call('auth_check');
-        $response_user = User::mapFromResponse($response);
+        $response_user = $this->hele->map(User::class)->call('auth_check');
 
         return $response_user['email'] === $user->email && $response_user['email'] === $credentials['email'];
     }
