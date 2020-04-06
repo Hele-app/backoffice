@@ -33,7 +33,9 @@ class HeleApiWrapper
 
     public function map(string $mapping, string $field = '.')
     {
-        $this->withMapping[$field] = $mapping;
+        if ($this->checkForHeleApiResource($mapping)) {
+            $this->withMapping[$field] = $mapping;
+        }
 
         return $this;
     }
