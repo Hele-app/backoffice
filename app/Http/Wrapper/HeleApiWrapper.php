@@ -9,6 +9,7 @@ class HeleApiWrapper
 {
     private const ROUTES = [
         'login' => ['method' => 'POST', 'url' => '/auth/login'],
+        'auth_check' => ['method' => 'GET', 'url' => '/auth/me'],
     ];
 
     private const DEFAULT_HEADERS = [
@@ -36,13 +37,17 @@ class HeleApiWrapper
             $http_request = $http_request->withToken(session(HeleUserProvider::TOKEN));
         }
 
-        $response = $http_request->$method($url, $body); // ->throw()->json();
+        $response = $http_request->$method($url, $body);
 
+        \Log::debug("$method $url");
+        \Log::debug($response->body());
         if ($response->successful()) {
             return $response->json();
         } else {
             \Log::error($response->json());
             $response->throw();
+
+            return $response->json();
         }
     }
 

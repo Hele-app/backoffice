@@ -21,7 +21,7 @@
     <div id="app">
        <x-sidebar />
 
-        <main class="main-content py-4">
+        <main class="main-content pb-3 pt-6">
             <x-navbar />
 
             @yield('content')

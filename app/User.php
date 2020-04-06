@@ -41,7 +41,7 @@ class User extends Authenticatable
      *
      * @return User
      */
-    public static function mapResponseToUser($response)
+    public static function mapFromResponse($response)
     {
         $user = new User();
         $user->id = $response['id'];

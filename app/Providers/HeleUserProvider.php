@@ -6,6 +6,7 @@ use App\Http\Wrapper\HeleApiWrapper;
 use App\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\ServiceProvider;
 
 class HeleUserProvider extends ServiceProvider implements UserProvider
@@ -61,24 +62,34 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
     }
 
     /**
+     * @param int $identifier xxx
+     *
      * @return User
      */
     public function retrieveById($identifier)
     {
-        // TODO: call GET /auth/me to validate that the token is still valid or attempt to refresh it
-        return session()->get('user');
+        $response = $this->hele->call('auth_check');
+
+        return User::mapFromResponse($response);
     }
 
     /**
+     * @param string $identifier xxx
+     * @param string $token      xxx
+     *
      * @return User
      */
     public function retrieveByToken($identifier, $token)
     {
-        // TODO: call GET /auth/me to validate that the token is still valid or attempt to refresh it
-        return session()->get('user');
+        $response = $this->hele->call('auth_check');
+
+        return User::mapFromResponse($response);
     }
 
     /**
+     * @param Authenticatable $user  to update
+     * @param string          $token to store if remembered
+     *
      * @return bool
      */
     public function updateRememberToken(Authenticatable $user, $token)
@@ -87,28 +98,37 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
     }
 
     /**
+     * @param array $credentials from the login form
+     *
      * @return User
      */
     public function retrieveByCredentials(array $credentials)
     {
-        $response = $this->hele->call('login', $credentials);
+        try {
+            $response = $this->hele->call('login', $credentials);
 
-        $user = User::mapResponseToUser($response['user']);
+            $user = User::mapFromResponse($response['user']);
 
-        session()->put(self::TOKEN, $response['accessToken']['token']);
-        session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
+            session()->put(self::TOKEN, $response['accessToken']['token']);
+            session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
 
-        session()->put('user', $user);
-
-        return $user;
+            return $user;
+        } catch (RequestException $e) {
+            return null;
+        }
     }
 
     /**
+     * @param Authenticatable $user        currently logged in
+     * @param array           $credentials to test
+     *
      * @return bool
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        // TODO: call GET /auth/me to validate that the token is correct and matches the $user
-        return session()->has(self::TOKEN);
+        $response = $this->hele->call('auth_check');
+        $response_user = User::mapFromResponse($response);
+
+        return $response_user['email'] === $user->email && $response_user['email'] === $credentials['email'];
     }
 }
