@@ -10,6 +10,8 @@ class HeleApiWrapper
     private const ROUTES = [
         'login' => ['method' => 'POST', 'url' => '/auth/login'],
         'auth_check' => ['method' => 'GET', 'url' => '/auth/me'],
+        'users.professionals_index' => ['method' => 'GET', 'url' => '/user/pro'],
+        'users.youngs_index' => ['method' => 'GET', 'url' => '/user/young'],
     ];
 
     private const DEFAULT_HEADERS = [
