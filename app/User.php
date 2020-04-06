@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -36,4 +35,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * @param array $response
+     *
+     * @return User
+     */
+    public static function mapResponseToUser($response)
+    {
+        $user = new User();
+        $user->id = $response['id'];
+        $user->phone = $response['phone'];
+        $user->username = $response['username'];
+        $user->email = $response['email'];
+        $user->role = $response['role'];
+        $user->profession = $response['profession'];
+        $user->city = $response['city'];
+        $user->phone_pro = $response['phone_pro'];
+        $user->active = $response['active'];
+
+        return $user;
+    }
 }

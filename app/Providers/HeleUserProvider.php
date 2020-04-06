@@ -93,7 +93,7 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
     {
         $response = $this->hele->call('login', $credentials);
 
-        $user = $this->mapResponseToUser($response);
+        $user = User::mapResponseToUser($response['user']);
 
         session()->put(self::TOKEN, $response['accessToken']['token']);
         session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
@@ -110,26 +110,5 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
     {
         // TODO: call GET /auth/me to validate that the token is correct and matches the $user
         return session()->has(self::TOKEN);
-    }
-
-    /**
-     * @param object $response
-     *
-     * @return User
-     */
-    private function mapResponseToUser($response)
-    {
-        $user = new User();
-        $user->id = $response['user']['id'];
-        $user->phone = $response['user']['phone'];
-        $user->username = $response['user']['username'];
-        $user->email = $response['user']['email'];
-        $user->role = $response['user']['role'];
-        $user->profession = $response['user']['profession'];
-        $user->city = $response['user']['city'];
-        $user->phone_pro = $response['user']['phone_pro'];
-        $user->active = $response['user']['active'];
-
-        return $user;
     }
 }
