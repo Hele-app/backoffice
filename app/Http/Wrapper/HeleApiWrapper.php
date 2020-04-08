@@ -65,10 +65,16 @@ class HeleApiWrapper
             $http_request = $http_request->withToken(session(HeleUserProvider::TOKEN));
         }
 
+        $time_before_request = hrtime(true);
         $response = $http_request->$method($url, $body);
 
-        \Log::debug("$method $url");
-        \Log::debug($response->body());
+        if (\App::bound('debugbar') && \App::make('debugbar')->hasCollector('queries')) {
+            \App::make('debugbar')->getCollector('queries')->addQuery("$method $url\n{$response->body()}", $body, (hrtime(true) - $time_before_request) / 1e+6, \DB::connection());
+        } else {
+            \Log::debug("$method $url");
+            \Log::debug($response->body());
+        }
+
         if ($response->successful()) {
             $response = $response->json();
 
