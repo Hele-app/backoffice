@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Wrapper\HeleApiWrapper;
+use App\Models\RememberToken;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -79,6 +80,14 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
+        $remember_token = RememberToken::where('remember_token', $token)->first();
+
+        if (!$remember_token) {
+            return null;
+        }
+
+        session()->put(self::TOKEN, $remember_token->access_token);
+
         return $this->hele->map(User::class)->call('auth_check');
     }
 
@@ -90,6 +99,13 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
+        if ($token) {
+            return (bool) RememberToken::updateOrCreate(
+                ['remember_token' => $token],
+                ['access_token' => session()->get(self::TOKEN)],
+            );
+        }
+
         return false;
     }
 
@@ -104,7 +120,7 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
             $response = $this->hele->map(User::class, 'user')->call('login', $credentials);
 
             session()->put(self::TOKEN, $response['accessToken']['token']);
-            session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
+            // session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
 
             return $response['user'];
         } catch (RequestException $e) {
