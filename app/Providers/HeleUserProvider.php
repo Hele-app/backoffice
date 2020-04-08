@@ -69,6 +69,8 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function retrieveById($identifier)
     {
+        \Log::debug(__METHOD__." => id: $identifier");
+
         return $this->hele->map(User::class)->call('auth_check');
     }
 
@@ -80,6 +82,8 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
+        \Log::debug(__METHOD__." => id: $identifier // token: $token");
+
         $remember_token = RememberToken::where('remember_token', $token)->first();
 
         if (!$remember_token) {
@@ -99,6 +103,8 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
+        \Log::debug(__METHOD__." => user.phone: {$user->phone} // token: $token");
+
         if ($token) {
             return (bool) RememberToken::updateOrCreate(
                 ['remember_token' => $token],
@@ -116,6 +122,8 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
+        \Log::debug(__METHOD__.' => credentials: '.json_encode($credentials));
+
         try {
             $response = $this->hele->map(User::class, 'user')->call('login', $credentials);
 
@@ -136,6 +144,8 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
+        \Log::debug(__METHOD__." => user.phone: {$user->phone} // credentials: ".json_encode($credentials));
+
         $response_user = $this->hele->map(User::class)->call('auth_check');
 
         return $response_user['email'] === $user->email && $response_user['email'] === $credentials['email'];
