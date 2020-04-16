@@ -136,7 +136,7 @@ class HeleApiWrapper
     {
         return preg_replace_callback('/{(\w+)}/', function ($matches) use (&$params) {
             if (array_key_exists($matches[1], $params)) {
-                $value = $param[$matches[1]];
+                $value = $params[$matches[1]];
                 unset($params[$matches[1]]);
 
                 return $value;
