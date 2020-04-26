@@ -16,7 +16,17 @@ class User extends Authenticatable implements HeleApiResource
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'id',
+        'phone',
+        'username',
+        'email',
+        'birthyear',
+        'establishment_id',
+        'role',
+        'profession',
+        'city',
+        'phone_pro',
+        'active',
     ];
 
     /**
@@ -37,6 +47,11 @@ class User extends Authenticatable implements HeleApiResource
         'email_verified_at' => 'datetime',
     ];
 
+    public static function getRoles()
+    {
+        return ['YOUNG', 'MODERATOR', 'PROFESSIONAL', 'ADMIN'];
+    }
+
     /**
      * @param array $data provided from the API
      *
@@ -49,6 +64,9 @@ class User extends Authenticatable implements HeleApiResource
         $user->phone = $data['phone'];
         $user->username = $data['username'];
         $user->email = $data['email'];
+        $user->birthyear = $data['birthyear'];
+        $user->establishment_id = $data['establishment_id'];
+        // $user->establishment = Establishment::mapFromResponse($data['establishment']);
         $user->role = $data['role'];
         $user->profession = $data['profession'];
         $user->city = $data['city'];

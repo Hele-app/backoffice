@@ -3,7 +3,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav align-items-center  ml-md-auto ">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="#" onclick="event.preventDefault();">
                         <i class="fa fa-bell"></i>
                     </a>
                 </li>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Wrapper\HeleApiWrapper;
 use App\Models\User;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 
 class YoungController extends Controller
@@ -35,7 +36,8 @@ class YoungController extends Controller
     public function index(Request $request)
     {
         $users = $this->hele->paginate(User::class)->call('users.youngs_index', $request->only(['q', 'p']));
-        dd($users);
+
+        return view('user.young.index')->with('users', $users);
     }
 
     /**
@@ -45,6 +47,7 @@ class YoungController extends Controller
      */
     public function create()
     {
+        return view('user.young.create-or-edit')->with('roles', User::getRoles());
     }
 
     /**
@@ -54,6 +57,13 @@ class YoungController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            $this->hele->call('users.youngs_store', $request->all());
+
+            return redirect()->route('youngs.index')->with('status', __('Jeune créé avec succès'));
+        } catch (RequestException $e) {
+            return back()->withInput($request->input())->withErrors($this->hele->errors($e->response));
+        }
     }
 
     /**
@@ -61,8 +71,11 @@ class YoungController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(int $young)
     {
+        $user = $this->hele->map(User::class)->call(['users.youngs_show', 'id' => $young]);
+
+        dd($user);
     }
 
     /**
@@ -70,8 +83,11 @@ class YoungController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(int $young)
     {
+        $user = $this->hele->map(User::class)->call(['users.youngs_show', 'id' => $young]);
+
+        return view('user.young.create-or-edit')->with('user', $user)->with('roles', User::getRoles());
     }
 
     /**
@@ -79,8 +95,15 @@ class YoungController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, int $young)
     {
+        try {
+            $user = $this->hele->map(User::class)->call(['users.youngs_update', 'id' => $young], $request->all());
+
+            return back()->with('status', __('Jeune mis à jour avec succès'));
+        } catch (RequestException $e) {
+            return back()->withInput($request->input())->withErrors($this->hele->errors($e->response));
+        }
     }
 
     /**
@@ -88,7 +111,14 @@ class YoungController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(int $young)
     {
+        try {
+            $this->hele->call(['users.youngs_destroy', 'id' => $young]);
+
+            return redirect()->route('youngs.index')->with('status', __('Jeune supprimé avec succès'));
+        } catch (RequestException $e) {
+            return back()->withErrors($this->hele->errors($e->response));
+        }
     }
 }

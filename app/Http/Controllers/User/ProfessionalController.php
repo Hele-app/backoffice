@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Wrapper\HeleApiWrapper;
 use App\Models\User;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 
 class ProfessionalController extends Controller
@@ -35,7 +36,8 @@ class ProfessionalController extends Controller
     public function index(Request $request)
     {
         $users = $this->hele->paginate(User::class)->call('users.professionals_index', $request->only(['q', 'p']));
-        dd($users);
+
+        return view('user.professional.index')->with('users', $users);
     }
 
     /**
@@ -45,6 +47,7 @@ class ProfessionalController extends Controller
      */
     public function create()
     {
+        return view('user.professional.create-or-edit')->with('roles', User::getRoles());
     }
 
     /**
@@ -54,6 +57,13 @@ class ProfessionalController extends Controller
      */
     public function store(Request $request)
     {
+        try {
+            $this->hele->call('users.professionals_store', $request->all());
+
+            return redirect()->route('professionals.index')->with('status', __('Professionnel créé avec succès'));
+        } catch (RequestException $e) {
+            return back()->withInput($request->input())->withErrors($this->hele->errors($e->response));
+        }
     }
 
     /**
@@ -61,8 +71,11 @@ class ProfessionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(int $professional)
     {
+        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $professional]);
+
+        dd($user);
     }
 
     /**
@@ -70,8 +83,11 @@ class ProfessionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(int $professional)
     {
+        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $professional]);
+
+        return view('user.professional.create-or-edit')->with('user', $user)->with('roles', User::getRoles());
     }
 
     /**
@@ -79,8 +95,15 @@ class ProfessionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, int $professional)
     {
+        try {
+            $user = $this->hele->map(User::class)->call(['users.professionals_update', 'id' => $professional], $request->all());
+
+            return back()->with('status', __('Professionnel mis à jour avec succès'));
+        } catch (RequestException $e) {
+            return back()->withInput($request->input())->withErrors($this->hele->errors($e->response));
+        }
     }
 
     /**
@@ -88,7 +111,14 @@ class ProfessionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(int $professional)
     {
+        try {
+            $this->hele->call(['users.professionals_destroy', 'id' => $professional]);
+
+            return redirect()->route('professionals.index')->with('status', __('Professionnel supprimé avec succès'));
+        } catch (RequestException $e) {
+            return back()->withErrors($this->hele->errors($e->response));
+        }
     }
 }
