@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Http\Wrapper\HeleApiWrapper;
-use App\User;
+use App\Models\RememberToken;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\ServiceProvider;
 
 class HeleUserProvider extends ServiceProvider implements UserProvider
@@ -61,75 +63,91 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
     }
 
     /**
+     * @param int $identifier xxx
+     *
      * @return User
      */
     public function retrieveById($identifier)
     {
-        // TODO: call GET /auth/me to validate that the token is still valid or attempt to refresh it
-        return session()->get('user');
+        \Log::debug(__METHOD__." => id: $identifier");
+
+        return $this->hele->map(User::class)->call('auth_check');
     }
 
     /**
+     * @param string $identifier xxx
+     * @param string $token      xxx
+     *
      * @return User
      */
     public function retrieveByToken($identifier, $token)
     {
-        // TODO: call GET /auth/me to validate that the token is still valid or attempt to refresh it
-        return session()->get('user');
+        \Log::debug(__METHOD__." => id: $identifier // token: $token");
+
+        $remember_token = RememberToken::where('remember_token', $token)->first();
+
+        if (!$remember_token) {
+            return null;
+        }
+
+        session()->put(self::TOKEN, $remember_token->access_token);
+
+        return $this->hele->map(User::class)->call('auth_check');
     }
 
     /**
+     * @param Authenticatable $user  to update
+     * @param string          $token to store if remembered
+     *
      * @return bool
      */
     public function updateRememberToken(Authenticatable $user, $token)
     {
+        \Log::debug(__METHOD__." => user.phone: {$user->phone} // token: $token");
+
+        if ($token) {
+            return (bool) RememberToken::updateOrCreate(
+                ['remember_token' => $token],
+                ['access_token' => session()->get(self::TOKEN)],
+            );
+        }
+
         return false;
     }
 
     /**
+     * @param array $credentials from the login form
+     *
      * @return User
      */
     public function retrieveByCredentials(array $credentials)
     {
-        $response = $this->hele->call('login', $credentials);
+        \Log::debug(__METHOD__.' => credentials: '.json_encode($credentials));
 
-        $user = $this->mapResponseToUser($response);
+        try {
+            $response = $this->hele->map(User::class, 'user')->call('login', $credentials);
 
-        session()->put(self::TOKEN, $response['accessToken']['token']);
-        session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
+            session()->put(self::TOKEN, $response['accessToken']['token']);
+            // session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
 
-        session()->put('user', $user);
-
-        return $user;
+            return $response['user'];
+        } catch (RequestException $e) {
+            return null;
+        }
     }
 
     /**
+     * @param Authenticatable $user        currently logged in
+     * @param array           $credentials to test
+     *
      * @return bool
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        // TODO: call GET /auth/me to validate that the token is correct and matches the $user
-        return session()->has(self::TOKEN);
-    }
+        \Log::debug(__METHOD__." => user.phone: {$user->phone} // credentials: ".json_encode($credentials));
 
-    /**
-     * @param object $response
-     *
-     * @return User
-     */
-    private function mapResponseToUser($response)
-    {
-        $user = new User();
-        $user->id = $response['user']['id'];
-        $user->phone = $response['user']['phone'];
-        $user->username = $response['user']['username'];
-        $user->email = $response['user']['email'];
-        $user->role = $response['user']['role'];
-        $user->profession = $response['user']['profession'];
-        $user->city = $response['user']['city'];
-        $user->phone_pro = $response['user']['phone_pro'];
-        $user->active = $response['user']['active'];
+        $response_user = $this->hele->map(User::class)->call('auth_check');
 
-        return $user;
+        return $response_user['email'] === $user->email && $response_user['email'] === $credentials['email'];
     }
 }

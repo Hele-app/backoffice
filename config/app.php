@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'hele_api_base_url' => env('API_BASE_URL', 'http://localhost:3333'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

@@ -6,25 +6,30 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
+
+                @auth
+                <h6 class="navbar-heading p-0 text-muted">
+                    {{ Auth::user()->email }}
+                </h6>
+                @endauth
+                <hr class="my-3" />
             </div>
             <div class="navbar-inner">
                 <!-- Collapse -->
                 <div class="collapse navbar-collapse" id="sidenav-collapse-main">
-                    <h6 class="navbar-heading p-0 text-muted">
-                        {{ __('Features') }}
-                    </h6>
                     <!-- Nav items -->
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">Dashboard</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('professionals.index') }}">Professionals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('youngs.index') }}">Youngs</a>
+                        </li>
                     </ul>
                     <hr class="my-3" />
-                    @auth
-                    <h6 class="navbar-heading p-0 text-muted">
-                        {{ Auth::user()->email }}
-                    </h6>
-                    @endauth
                     <ul class="navbar-nav">
                         @guest
                         <li class="nav-item">
