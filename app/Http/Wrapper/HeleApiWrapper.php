@@ -56,14 +56,14 @@ class HeleApiWrapper
         }
 
         $method = self::ROUTES[$routeName]['method'];
-        $url = $this->formatUrl(self::ROUTES[$routeName]['url'], $routeParams, $optionnal);
-
-        $http_request = Http::withHeaders(self::DEFAULT_HEADERS);
 
         if ($method === 'GET') {
             $optionnal = $body;
             $body = [];
         }
+
+        $url = $this->formatUrl(self::ROUTES[$routeName]['url'], $routeParams, $optionnal);
+        $http_request = Http::withHeaders(self::DEFAULT_HEADERS);
 
         if (session(HeleUserProvider::TOKEN, null)) {
             $http_request = $http_request->withToken(session(HeleUserProvider::TOKEN));
