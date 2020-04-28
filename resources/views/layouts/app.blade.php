@@ -40,13 +40,24 @@
             </div>
             @show
 
-            @if (session('status'))
-            <div class="col-10 offset-1" style="z-index: 1000">
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
+            <div class="col-10 offset-1" style="position: absolute; z-index: 1000">
+                @if (session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span class="alert-text">{{ session('status') }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                @endif
+                @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span class="alert-text">{{ session('error') }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @endif
             </div>
-            @endif
 
             <div class="container-fluid mt--6">
                 @yield('content')

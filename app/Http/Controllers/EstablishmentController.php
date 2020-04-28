@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Wrapper\HeleApiWrapper;
 use App\Models\Establishment;
-use App\Models\User;
+use App\Models\Region;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 
-class YoungController extends Controller
+class EstablishmentController extends Controller
 {
     /**
      * An instance of HeleApiWrapper.
@@ -36,9 +35,9 @@ class YoungController extends Controller
      */
     public function index(Request $request)
     {
-        $users = $this->hele->paginate(User::class)->call('users.youngs_index', $request->only(['q', 'p']));
+        $establishments = $this->hele->paginate(Establishment::class)->call('establishment_index', $request->only(['q', 'p']));
 
-        return view('user.young.index')->with('users', $users);
+        return view('establishment.index')->with('establishments', $establishments);
     }
 
     /**
@@ -48,9 +47,9 @@ class YoungController extends Controller
      */
     public function create()
     {
-        $establishments = $this->hele->map(Establishment::class)->call('establishment_all');
+        $regions = $this->hele->map(Region::class)->call('region_all');
 
-        return view('user.young.create-or-edit')->with('roles', User::getRoles())->with('establishments', $establishments);
+        return view('establishment.create-or-edit')->with('regions', $regions);
     }
 
     /**
@@ -61,9 +60,9 @@ class YoungController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->hele->call('users.youngs_store', $request->all());
+            $this->hele->call('establishment_store', $request->all());
 
-            return redirect()->route('youngs.index')->with('status', __('Jeune créé avec succès'));
+            return redirect()->route('establishments.index')->with('status', __('Etablissement créé avec succès'));
         } catch (RequestException $e) {
             return back()->withInput($request->input())->withErrors($this->hele->errors($e->response));
         }
@@ -76,9 +75,9 @@ class YoungController extends Controller
      */
     public function show(int $id)
     {
-        $user = $this->hele->map(User::class)->call(['users.youngs_show', 'id' => $id]);
+        $establishment = $this->hele->map(Establishment::class)->call(['establishment_show', ['id' => $id]]);
 
-        dd($user);
+        dd($establishment);
     }
 
     /**
@@ -88,10 +87,10 @@ class YoungController extends Controller
      */
     public function edit(int $id)
     {
-        $user = $this->hele->map(User::class)->call(['users.youngs_show', 'id' => $id]);
-        $establishments = $this->hele->map(Establishment::class)->call('establishment_all');
+        $establishment = $this->hele->map(Establishment::class)->call(['establishment_show', 'id' => $id]);
+        $regions = $this->hele->map(Region::class)->call('region_all');
 
-        return view('user.young.create-or-edit')->with('user', $user)->with('roles', User::getRoles())->with('establishments', $establishments);
+        return view('establishment.create-or-edit')->with('establishment', $establishment)->with('regions', $regions);
     }
 
     /**
@@ -102,9 +101,9 @@ class YoungController extends Controller
     public function update(Request $request, int $id)
     {
         try {
-            $user = $this->hele->map(User::class)->call(['users.youngs_update', 'id' => $id], $request->all());
+            $establishment = $this->hele->map(Establishment::class)->call(['establishment_update', 'id' => $id], $request->all());
 
-            return back()->with('status', __('Jeune mis à jour avec succès'));
+            return back()->with('status', __('Etablissement mis à jour avec succès'));
         } catch (RequestException $e) {
             return back()->withInput($request->input())->withErrors($this->hele->errors($e->response));
         }
@@ -118,9 +117,9 @@ class YoungController extends Controller
     public function destroy(int $id)
     {
         try {
-            $this->hele->call(['users.youngs_destroy', 'id' => $id]);
+            $this->hele->call(['establishment_destroy', 'id' => $id]);
 
-            return redirect()->route('youngs.index')->with('status', __('Jeune supprimé avec succès'));
+            return redirect()->route('establishments.index')->with('status', __('Etablissement supprimé avec succès'));
         } catch (RequestException $e) {
             return back()->withErrors($this->hele->errors($e->response));
         }

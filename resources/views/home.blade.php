@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title'){{ __('Tableau de bord') }}@endsection
+
 @section('content')
 <div class="row justify-content-center">
     <x-widgets.professionals-widget />

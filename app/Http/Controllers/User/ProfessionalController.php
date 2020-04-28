@@ -71,9 +71,9 @@ class ProfessionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(int $professional)
+    public function show(int $id)
     {
-        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $professional]);
+        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $id]);
 
         dd($user);
     }
@@ -83,9 +83,9 @@ class ProfessionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(int $professional)
+    public function edit(int $id)
     {
-        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $professional]);
+        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $id]);
 
         return view('user.professional.create-or-edit')->with('user', $user)->with('roles', User::getRoles());
     }
@@ -95,10 +95,10 @@ class ProfessionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $professional)
+    public function update(Request $request, int $id)
     {
         try {
-            $user = $this->hele->map(User::class)->call(['users.professionals_update', 'id' => $professional], $request->all());
+            $user = $this->hele->map(User::class)->call(['users.professionals_update', 'id' => $id], $request->all());
 
             return back()->with('status', __('Professionnel mis à jour avec succès'));
         } catch (RequestException $e) {
@@ -111,10 +111,10 @@ class ProfessionalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $professional)
+    public function destroy(int $id)
     {
         try {
-            $this->hele->call(['users.professionals_destroy', 'id' => $professional]);
+            $this->hele->call(['users.professionals_destroy', 'id' => $id]);
 
             return redirect()->route('professionals.index')->with('status', __('Professionnel supprimé avec succès'));
         } catch (RequestException $e) {

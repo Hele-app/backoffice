@@ -27,6 +27,7 @@ class User extends Authenticatable implements HeleApiResource
         'city',
         'phone_pro',
         'active',
+        'last_login',
     ];
 
     /**
@@ -44,7 +45,7 @@ class User extends Authenticatable implements HeleApiResource
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'last_login' => 'datetime',
     ];
 
     public static function getRoles()
@@ -60,18 +61,23 @@ class User extends Authenticatable implements HeleApiResource
     public static function mapFromResponse(array $data)
     {
         $user = new User();
+
         $user->id = $data['id'];
         $user->phone = $data['phone'];
         $user->username = $data['username'];
         $user->email = $data['email'];
         $user->birthyear = $data['birthyear'];
         $user->establishment_id = $data['establishment_id'];
-        // $user->establishment = Establishment::mapFromResponse($data['establishment']);
         $user->role = $data['role'];
         $user->profession = $data['profession'];
         $user->city = $data['city'];
         $user->phone_pro = $data['phone_pro'];
         $user->active = $data['active'];
+        $user->last_login = $data['last_login'];
+
+        if (isset($data['establishment'])) {
+            $user->establishment = Establishment::mapFromResponse($data['establishment']);
+        }
 
         return $user;
     }

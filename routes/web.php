@@ -20,3 +20,4 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/', 'HomeController@index')->name('home');
 Route::resource('youngs', 'User\YoungController');
 Route::resource('professionals', 'User\ProfessionalController');
+Route::resource('establishments', 'EstablishmentController');

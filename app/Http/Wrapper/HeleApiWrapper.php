@@ -120,11 +120,13 @@ class HeleApiWrapper
     {
         $response = $response->json();
 
-        if (isset($response['errors'])) {
+        if (isset($response['errors']) && is_array($response['errors'])) {
             return array_combine(
                 array_map(fn ($e) => $e['field'], $response['errors']),
                 array_map(fn ($e) => $e['message'], $response['errors'])
             );
+        } elseif (isset($response['errors']) && is_string($response['errors'])) {
+            session()->flash('error', $response['errors']);
         } else {
             return [];
         }
@@ -169,5 +171,13 @@ class HeleApiWrapper
         'users.youngs_show' => ['method' => 'GET', 'url' => '/user/young/{id}'],
         'users.youngs_update' => ['method' => 'PATCH', 'url' => '/user/young/{id}'],
         'users.youngs_destroy' => ['method' => 'DELETE', 'url' => '/user/young/{id}'],
+
+        'region_all' => ['method' => 'GET', 'url' => '/region/all'],
+        'establishment_all' => ['method' => 'GET', 'url' => '/establishment/all'],
+        'establishment_index' => ['method' => 'GET', 'url' => '/establishment'],
+        'establishment_store' => ['method' => 'POST', 'url' => '/establishment'],
+        'establishment_show' => ['method' => 'GET', 'url' => '/establishment/{id}'],
+        'establishment_update' => ['method' => 'PATCH', 'url' => '/establishment/{id}'],
+        'establishment_destroy' => ['method' => 'DELETE', 'url' => '/establishment/{id}'],
     ];
 }
