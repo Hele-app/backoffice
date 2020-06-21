@@ -11,7 +11,19 @@
     <div class="col">
         <div class="card">
             <div class="card-header border-0">
-                <h3 class="mb-0">{{ __('Professionels') }}</h3>
+                <h3 class="mb-0">
+                    {{ __('Professionels') }}
+                    <form class="d-inline-flex" action="" method="GET">
+                        <div class="input-group">
+                            <input class="form-control form-control-alternative form-control-sm" type="text" name="q" value="{{ request()->input('q') }}" placeholder="{{ __('Recherche') }}" role="searchbox" />
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-outline-neutral" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </h3>
             </div>
 
             <div class="table-responsive">
@@ -19,7 +31,6 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col" class="sort" data-sort="phone">Téléphone</th>
-                            <th scope="col" class="sort" data-sort="username">Pseudonyme</th>
                             <th scope="col" class="sort" data-sort="email">eMail</th>
                             <th scope="col" class="sort" data-sort="profession">Profession</th>
                             <th scope="col" class="sort" data-sort="role">Role</th>
@@ -31,9 +42,6 @@
                         <tr>
                             <td scope="row" class="phone">
                                 {{ $user->phone }}
-                            </td>
-                            <td scope="row" class="username">
-                                {{ $user->username }}
                             </td>
                             <td scope="row" class="email">
                                 {{ $user->email }}

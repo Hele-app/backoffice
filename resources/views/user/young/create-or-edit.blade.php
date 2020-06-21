@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $user->email ?? __('Nouveau jeune'))
+@section('title', $user->username ?? __('Nouveau jeune'))
 
 @section('header-buttons')
 @isset ($user)
@@ -77,8 +77,7 @@
                     <div class="form-group">
                         <label class="form-control-label" for="establishment_code">{{ __('Etablissement') }}</label>
                         <select class="form-control" id="establishment_code" name="establishment_code">
-                            {{-- TODO: establishment select --}}
-                            @foreach ($establishments ?? [] as $e)
+                            @foreach ($establishments as $e)
                                 <option value="{{ $e->code }}" @if(($user->establishment_id ?? null) === $e->id) selected @endif>{{ $e->name }} [{{$e->code}}]</option>
                             @endforeach
                         </select>

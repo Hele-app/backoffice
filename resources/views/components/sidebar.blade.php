@@ -20,30 +20,33 @@
                     <!-- Nav items -->
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/') }}">Dashboard</a>
+                            <a class="nav-link" href="{{ url('/') }}">{{ __('Tableau de bord') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('professionals.index') }}">Professionals</a>
+                            <a class="nav-link" href="{{ route('professionals.index') }}">{{ __('Professionnels') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('youngs.index') }}">Youngs</a>
+                            <a class="nav-link" href="{{ route('youngs.index') }}">{{ __('Jeunes') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('establishments.index') }}">{{ __('Etablissements') }}</a>
                         </li>
                     </ul>
                     <hr class="my-3" />
                     <ul class="navbar-nav">
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
                         </li>
                         @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Inscription') }}</a>
                         </li>
                         @endif
                         @else
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                                {{ __('Deconnexion') }}
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf

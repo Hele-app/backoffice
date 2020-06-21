@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Jeunes'))
+@section('title', __('Etablissements'))
 
 @section('header-buttons')
 <form class="d-inline-flex" action="" method="GET">
@@ -13,7 +13,7 @@
         </div>
     </div>
 </form>
-<a href="{{ route('youngs.create') }}" class="btn btn-sm btn-neutral">{{ __('Nouveau') }}</a>
+<a href="{{ route('establishments.create') }}" class="btn btn-sm btn-neutral">{{ __('Nouveau') }}</a>
 @endsection
 
 @section('content')
@@ -21,37 +21,33 @@
     <div class="col">
         <div class="card">
             <div class="card-header border-0">
-                <h3 class="mb-0">{{ __('Jeunes') }}</h3>
+                <h3 class="mb-0">{{ __('Etablissements') }}</h3>
             </div>
 
             <div class="table-responsive">
                 <table class="table align-items-center">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col" class="sort" data-sort="phone">Téléphone</th>
-                            <th scope="col" class="sort" data-sort="username">Pseudonyme</th>
-                            <th scope="col" class="sort" data-sort="establishment">Etablissement</th>
-                            <th scope="col" class="sort" data-sort="birthyear">Année de naissance</th>
+                            <th scope="col" class="sort" data-sort="name">Nom</th>
+                            <th scope="col" class="sort" data-sort="code">Code</th>
+                            <th scope="col" class="sort" data-sort="region">Region</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody class="list">
-                        @foreach ($users as $user)
+                        @foreach ($establishments as $establishment)
                         <tr>
-                            <td scope="row" class="phone">
-                                {{ $user->phone }}
+                            <td scope="row" class="name">
+                                {{ $establishment->name }}
                             </td>
-                            <td scope="row" class="username">
-                                {{ $user->username }}
+                            <td scope="row" class="code">
+                                {{ $establishment->code }}
                             </td>
-                            <td scope="row" class="establishment">
-                                {{ $user->establishment->name }}
-                            </td>
-                            <td scope="row" class="birthyear">
-                                {{ $user->birthyear }}
+                            <td scope="row" class="region">
+                                {{ $establishment->region->name }}
                             </td>
                             <td class="text-right">
-                                <a class="btn btn-outline-warning" href="{{ route('youngs.edit', $user) }}">
+                                <a class="btn btn-outline-warning" href="{{ route('establishments.edit', $establishment) }}">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             </td>
@@ -59,9 +55,6 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-            <div class="card-footer d-flex justify-content-end">
-                {{ $users->links() }}
             </div>
         </div>
     </div>
