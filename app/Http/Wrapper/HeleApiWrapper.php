@@ -62,8 +62,9 @@ class HeleApiWrapper
             $body = [];
         }
 
-        $url = $this->formatUrl(self::ROUTES[$routeName]['url'], $routeParams, $optionnal);
+        $url = $this->formatUrl(self::ROUTES[$routeName]['url'], $routeParams);
         $http_request = Http::withHeaders(self::DEFAULT_HEADERS);
+        $http_request = $http_request->withOptions(['query' => $optionnal]);
 
         if (session(HeleUserProvider::TOKEN, null)) {
             $http_request = $http_request->withToken(session(HeleUserProvider::TOKEN));
@@ -111,8 +112,6 @@ class HeleApiWrapper
         } else {
             \Log::error($response->json());
             $response->throw();
-
-            return $response->json();
         }
     }
 
@@ -132,9 +131,9 @@ class HeleApiWrapper
         }
     }
 
-    private function formatUrl(string $path, array $params, array $optionnal)
+    private function formatUrl(string $path, array $params)
     {
-        return str_replace('//', '/', config('app.hele_api_base_url').$this->replaceParameters($path, $params).'?'.http_build_query($optionnal));
+        return str_replace('//', '/', config('app.hele_api_base_url').$this->replaceParameters($path, $params));
     }
 
     private function replaceParameters(string $path, array $params)

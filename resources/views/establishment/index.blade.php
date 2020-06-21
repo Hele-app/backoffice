@@ -3,6 +3,16 @@
 @section('title', __('Etablissements'))
 
 @section('header-buttons')
+<form class="d-inline-flex" action="" method="GET">
+    <div class="input-group">
+        <input class="form-control form-control-alternative form-control-sm" type="text" name="q" value="{{ request()->input('q') }}" placeholder="{{ __('Recherche') }}" role="searchbox" />
+        <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-neutral" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
 <a href="{{ route('establishments.create') }}" class="btn btn-sm btn-neutral">{{ __('Nouveau') }}</a>
 @endsection
 

@@ -3,6 +3,16 @@
 @section('title', __('Jeunes'))
 
 @section('header-buttons')
+<form class="d-inline-flex" action="" method="GET">
+    <div class="input-group">
+        <input class="form-control form-control-alternative form-control-sm" type="text" name="q" value="{{ request()->input('q') }}" placeholder="{{ __('Recherche') }}" role="searchbox" />
+        <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-neutral" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
 <a href="{{ route('youngs.create') }}" class="btn btn-sm btn-neutral">{{ __('Nouveau') }}</a>
 @endsection
 
@@ -35,7 +45,7 @@
                                 {{ $user->username }}
                             </td>
                             <td scope="row" class="establishment">
-                                {{ $user->establishment }}
+                                {{ $user->establishment->name }}
                             </td>
                             <td scope="row" class="birthyear">
                                 {{ $user->birthyear }}
