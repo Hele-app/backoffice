@@ -66,12 +66,12 @@ class User extends Authenticatable implements HeleApiResource
         $user->phone = $data['phone'];
         $user->username = $data['username'];
         $user->email = $data['email'];
-        $user->birthyear = $data['birthyear'];
-        $user->establishment_id = $data['establishment_id'];
+        $user->birthyear = $data['birthyear'] ?? null;
+        $user->establishment_id = $data['establishment_id'] ?? null;
         $user->role = $data['role'];
-        $user->profession = $data['profession'];
-        $user->city = $data['city'];
-        $user->phone_pro = $data['phone_pro'];
+        $user->profession = $data['profession'] ?? null;
+        $user->city = $data['city'] ?? null;
+        $user->phone_pro = $data['phone_pro'] ?? null;
         $user->active = $data['active'];
         $user->last_login = $data['last_login'];
 

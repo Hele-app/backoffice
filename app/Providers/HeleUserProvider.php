@@ -127,8 +127,7 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
         try {
             $response = $this->hele->map(User::class, 'user')->call('login', $credentials);
 
-            session()->put(self::TOKEN, $response['accessToken']['token']);
-            // session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
+            session()->put(self::TOKEN, $response['accessToken']);
 
             return $response['user'];
         } catch (RequestException $e) {
