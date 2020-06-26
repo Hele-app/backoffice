@@ -34,7 +34,7 @@ class ProfessionalsWidget extends Component
         $users = $this->hele->call('users.professionals_index', []);
 
         return view('components.widgets.count-widget', [
-            'count' => $users['total'],
+            'count' => $users['rowCount'],
             'entity' => __('Professionnels'),
         ]);
     }

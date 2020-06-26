@@ -57,6 +57,8 @@ class HeleApiWrapper
 
         $method = self::ROUTES[$routeName]['method'];
 
+        unset($body['_token']);
+        unset($body['_method']);
         if ($method === 'GET') {
             $optionnal = $body;
             $body = [];
@@ -105,7 +107,7 @@ class HeleApiWrapper
             if ($this->withPagination === true) {
                 $this->withPagination = false;
 
-                return new LengthAwarePaginator($response['data'], $response['total'], $response['perPage'], $response['page']);
+                return new LengthAwarePaginator($response['data'], $response['rowCount'], $response['pageSize'], $response['page']);
             } else {
                 return $response;
             }
@@ -162,13 +164,13 @@ class HeleApiWrapper
         'users.professionals_index' => ['method' => 'GET', 'url' => '/user/pro'],
         'users.professionals_store' => ['method' => 'POST', 'url' => '/user/pro'],
         'users.professionals_show' => ['method' => 'GET', 'url' => '/user/pro/{id}'],
-        'users.professionals_update' => ['method' => 'PATCH', 'url' => '/user/pro/{id}'],
+        'users.professionals_update' => ['method' => 'PUT', 'url' => '/user/pro/{id}'],
         'users.professionals_destroy' => ['method' => 'DELETE', 'url' => '/user/pro/{id}'],
 
         'users.youngs_index' => ['method' => 'GET', 'url' => '/user/young'],
         'users.youngs_store' => ['method' => 'POST', 'url' => '/user/young'],
         'users.youngs_show' => ['method' => 'GET', 'url' => '/user/young/{id}'],
-        'users.youngs_update' => ['method' => 'PATCH', 'url' => '/user/young/{id}'],
+        'users.youngs_update' => ['method' => 'PUT', 'url' => '/user/young/{id}'],
         'users.youngs_destroy' => ['method' => 'DELETE', 'url' => '/user/young/{id}'],
 
         'region_all' => ['method' => 'GET', 'url' => '/region/all'],
@@ -176,7 +178,13 @@ class HeleApiWrapper
         'establishment_index' => ['method' => 'GET', 'url' => '/establishment'],
         'establishment_store' => ['method' => 'POST', 'url' => '/establishment'],
         'establishment_show' => ['method' => 'GET', 'url' => '/establishment/{id}'],
-        'establishment_update' => ['method' => 'PATCH', 'url' => '/establishment/{id}'],
+        'establishment_update' => ['method' => 'PUT', 'url' => '/establishment/{id}'],
         'establishment_destroy' => ['method' => 'DELETE', 'url' => '/establishment/{id}'],
+
+        'pois_index' => ['method' => 'GET', 'url' => '/map'],
+        'pois_store' => ['method' => 'POST', 'url' => '/map'],
+        'pois_show' => ['method' => 'GET', 'url' => '/map/{id}'],
+        'pois_update' => ['method' => 'PUT', 'url' => '/map/{id}'],
+        'pois_destroy' => ['method' => 'DELETE', 'url' => '/map/{id}'],
     ];
 }
