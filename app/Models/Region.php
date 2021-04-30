@@ -34,8 +34,8 @@ class Region extends Model implements HeleApiResource
         $region->name = $data['name'];
         $region->latitude = $data['latitude'];
         $region->longitude = $data['longitude'];
-        $region->latitudeDelta = $data['latitudeDelta'];
-        $region->longitudeDelta = $data['longitudeDelta'];
+        $region->latitudeDelta = $data['latitude_delta'];
+        $region->longitudeDelta = $data['longitude_delta'];
 
         return $region;
     }
