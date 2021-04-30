@@ -21,7 +21,7 @@ class HeleApiWrapper
         return $this;
     }
 
-    public function map(string $mapping, string $field = '.')
+    public function map(string $mapping, string $field = 'data')
     {
         if ($this->checkForHeleApiResource($mapping)) {
             $this->withMapping[$field] = $mapping;
@@ -86,20 +86,20 @@ class HeleApiWrapper
             $response = $response->json();
 
             foreach ($this->withMapping as $field => $mapping) {
-                $data = $field === '.' ? $response : $response[$field];
+                $data = $field === 'data' ? $response['data'] : $response['data'][$field];
                 if (count(array_filter(array_keys($data), 'is_string')) > 0) {
                     // the field is a single entity, because it contains only string keys
                     $data = $mapping::mapFromResponse($data);
                 } else {
-                    // the field is an array of entities, because it contains only numeric keys
+                    // the field is an array of entities, because it contains numeric keys
                     $data = array_map(fn ($d) => $mapping::mapFromResponse($d), $data);
                 }
 
-                if ($field === '.') {
-                    $response = $data;
+                if ($field === 'data') {
+                    $response['data'] = $data;
                     break;
                 } else {
-                    $response[$field] = $data;
+                    $response['data'][$field] = $data;
                 }
             }
             $this->withMapping = [];
