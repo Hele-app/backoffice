@@ -74,7 +74,7 @@ class MapPOIController extends Controller
      */
     public function show(int $id)
     {
-        $poi = $this->hele->map(MapPOI::class)->call(['pois_show', ['id' => $id]]);
+        $poi = $this->hele->map(MapPOI::class)->call(['pois_show', ['id' => $id]])['data'];
 
         dd($poi);
     }
@@ -86,7 +86,7 @@ class MapPOIController extends Controller
      */
     public function edit(int $id)
     {
-        $poi = $this->hele->map(MapPOI::class)->call(['pois_show', 'id' => $id]);
+        $poi = $this->hele->map(MapPOI::class)->call(['pois_show', 'id' => $id])['data'];
         $regions = $this->hele->map(Region::class, 'data')->call('region_all')['data'];
 
         return view('map.create-or-edit')->with('poi', $poi)->with('regions', $regions);
