@@ -76,7 +76,7 @@ class YoungController extends Controller
      */
     public function show(int $id)
     {
-        $user = $this->hele->map(User::class)->call(['users.youngs_show', 'id' => $id]);
+        $user = $this->hele->map(User::class)->call(['users.youngs_show', 'id' => $id])['data'];
 
         dd($user);
     }
@@ -88,7 +88,7 @@ class YoungController extends Controller
      */
     public function edit(int $id)
     {
-        $user = $this->hele->map(User::class)->call(['users.youngs_show', 'id' => $id]);
+        $user = $this->hele->map(User::class)->call(['users.youngs_show', 'id' => $id])['data'];
         $establishments = $this->hele->map(Establishment::class, 'data')->call('establishment_all')['data'];
 
         return view('user.young.create-or-edit')->with('user', $user)->with('roles', User::getRoles())->with('establishments', $establishments);
