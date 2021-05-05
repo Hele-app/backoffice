@@ -71,7 +71,7 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
     {
         \Log::debug(__METHOD__." => id: $identifier");
 
-        return $this->hele->map(User::class)->call('auth_check');
+        return $this->hele->map(User::class)->call('auth_check')['data'];
     }
 
     /**
@@ -127,10 +127,9 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
         try {
             $response = $this->hele->map(User::class, 'user')->call('login', $credentials);
 
-            session()->put(self::TOKEN, $response['accessToken']['token']);
-            // session()->put(self::TOKEN.'_refresh', $response['accessToken']['refreshToken']);
+            session()->put(self::TOKEN, $response['data']['accessToken']);
 
-            return $response['user'];
+            return $response['data']['user'];
         } catch (RequestException $e) {
             return null;
         }
@@ -148,6 +147,6 @@ class HeleUserProvider extends ServiceProvider implements UserProvider
 
         $response_user = $this->hele->map(User::class)->call('auth_check');
 
-        return $response_user['email'] === $user->email && $response_user['email'] === $credentials['email'];
+        return $response_user['data']->email === $user->email && $response_user['data']->email === $credentials['email'];
     }
 }

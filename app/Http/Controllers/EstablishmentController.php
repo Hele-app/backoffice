@@ -47,7 +47,7 @@ class EstablishmentController extends Controller
      */
     public function create()
     {
-        $regions = $this->hele->map(Region::class)->call('region_all');
+        $regions = $this->hele->map(Region::class, 'data')->call('region_all')['data'];
 
         return view('establishment.create-or-edit')->with('regions', $regions);
     }
@@ -75,7 +75,7 @@ class EstablishmentController extends Controller
      */
     public function show(int $id)
     {
-        $establishment = $this->hele->map(Establishment::class)->call(['establishment_show', ['id' => $id]]);
+        $establishment = $this->hele->map(Establishment::class)->call(['establishment_show', ['id' => $id]])['data'];
 
         dd($establishment);
     }
@@ -87,8 +87,8 @@ class EstablishmentController extends Controller
      */
     public function edit(int $id)
     {
-        $establishment = $this->hele->map(Establishment::class)->call(['establishment_show', 'id' => $id]);
-        $regions = $this->hele->map(Region::class)->call('region_all');
+        $establishment = $this->hele->map(Establishment::class)->call(['establishment_show', 'id' => $id])['data'];
+        $regions = $this->hele->map(Region::class, 'data')->call('region_all')['data'];
 
         return view('establishment.create-or-edit')->with('establishment', $establishment)->with('regions', $regions);
     }

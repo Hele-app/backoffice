@@ -21,3 +21,4 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::resource('youngs', 'User\YoungController');
 Route::resource('professionals', 'User\ProfessionalController');
 Route::resource('establishments', 'EstablishmentController');
+Route::resource('map', 'MapPOIController');

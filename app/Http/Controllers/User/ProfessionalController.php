@@ -73,7 +73,7 @@ class ProfessionalController extends Controller
      */
     public function show(int $id)
     {
-        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $id]);
+        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $id])['data'];
 
         dd($user);
     }
@@ -85,7 +85,7 @@ class ProfessionalController extends Controller
      */
     public function edit(int $id)
     {
-        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $id]);
+        $user = $this->hele->map(User::class)->call(['users.professionals_show', 'id' => $id])['data'];
 
         return view('user.professional.create-or-edit')->with('user', $user)->with('roles', User::getRoles());
     }
