@@ -42,7 +42,7 @@ class HeleApiWrapper
      * @param array        $body      the body to send. In case of a GET request, this becomes the querystring
      * @param array        $optionnal the optionnal data to send by the other mean (querystring in a POST, body in a GET)
      */
-    public function call($route, array $body = [], array $optionnal = [])
+    public function call($route, array $body = [], array $optionnal = [], array $headers = self::DEFAULT_HEADERS)
     {
         if (is_string($route)) {
             $route = [$route];
@@ -65,7 +65,11 @@ class HeleApiWrapper
         }
 
         $url = $this->formatUrl(self::ROUTES[$routeName]['url'], $routeParams);
-        $http_request = Http::withHeaders(self::DEFAULT_HEADERS);
+        if ($headers['Content-Type'] != 'multipart/form-data') {
+            $http_request = Http::withHeaders($headers);
+        } else {
+            $http_request = Http::attach('file', $body['file']->get(), $body['file']->getClientOriginalName());
+        }
         $http_request = $http_request->withOptions(['query' => $optionnal]);
 
         if (session(HeleUserProvider::TOKEN, null)) {
@@ -123,8 +127,8 @@ class HeleApiWrapper
 
         if (isset($response['errors']) && is_array($response['errors'])) {
             return array_combine(
-                array_map(fn ($e) => $e['field'], $response['errors']),
-                array_map(fn ($e) => $e['message'], $response['errors'])
+                array_map(fn ($e) => $e['param'], $response['errors']),
+                array_map(fn ($e) => $e['msg'], $response['errors'])
             );
         } elseif (isset($response['errors']) && is_string($response['errors'])) {
             session()->flash('error', $response['errors']);
@@ -186,5 +190,12 @@ class HeleApiWrapper
         'pois_show' => ['method' => 'GET', 'url' => '/map/{id}'],
         'pois_update' => ['method' => 'PUT', 'url' => '/map/{id}'],
         'pois_destroy' => ['method' => 'DELETE', 'url' => '/map/{id}'],
+
+        'article_all' => ['method' => 'GET', 'url' => '/article/all'],
+        'article_index' => ['method' => 'GET', 'url' => '/article'],
+        'article_store' => ['method' => 'POST', 'url' => '/article'],
+        'article_show' => ['method' => 'GET', 'url' => '/article/{id}'],
+        'article_update' => ['method' => 'PUT', 'url' => '/article/{id}'],
+        'article_destroy' => ['method' => 'DELETE', 'url' => '/article/{id}'],
     ];
 }
