@@ -22,3 +22,4 @@ Route::resource('youngs', 'User\YoungController');
 Route::resource('professionals', 'User\ProfessionalController');
 Route::resource('establishments', 'EstablishmentController');
 Route::resource('map', 'MapPOIController');
+Route::resource('articles', 'ArticleController');

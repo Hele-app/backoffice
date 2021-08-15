@@ -34,6 +34,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('map.index') }}">{{ __('Points d\'intérêt') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('articles.index') }}">{{ __('Articles') }}</a>
+                        </li>
                     </ul>
                     <hr class="my-3" />
                     <ul class="navbar-nav">
