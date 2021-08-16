@@ -37,6 +37,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('articles.index') }}">{{ __('Articles') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('advices.index') }}">{{ __('Conseils') }}</a>
+                        </li>
                     </ul>
                     <hr class="my-3" />
                     <ul class="navbar-nav">
