@@ -197,5 +197,12 @@ class HeleApiWrapper
         'article_show' => ['method' => 'GET', 'url' => '/article/{id}'],
         'article_update' => ['method' => 'PUT', 'url' => '/article/{id}'],
         'article_destroy' => ['method' => 'DELETE', 'url' => '/article/{id}'],
+
+        'advice_all' => ['method' => 'GET', 'url' => '/advice/all'],
+        'advice_index' => ['method' => 'GET', 'url' => '/advice'],
+        'advice_store' => ['method' => 'POST', 'url' => '/advice'],
+        'advice_show' => ['method' => 'GET', 'url' => '/advice/{id}'],
+        'advice_update' => ['method' => 'PUT', 'url' => '/advice/{id}'],
+        'advice_destroy' => ['method' => 'DELETE', 'url' => '/advice/{id}'],
     ];
 }
